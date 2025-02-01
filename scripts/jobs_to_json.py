@@ -3,6 +3,8 @@ import json
 from openai import OpenAI
 from pathlib import Path
 from dotenv import load_dotenv
+import re
+import uuid
 
 def read_jobs_file(filename):
     with open(filename, 'r', encoding='utf-8') as file:
@@ -34,6 +36,10 @@ def chunk_content(content, max_chars=8000):
     print(f"Split content into {len(chunks)} chunks")
     return chunks
 
+def generate_uid(job_type="job"):
+    """Generate a unique identifier with a job type prefix."""
+    return f"{job_type}-{str(uuid.uuid4())}"
+
 def process_jobs_with_openai(content):
     client = OpenAI()
     
@@ -42,7 +48,7 @@ def process_jobs_with_openai(content):
     {
       "jobs": [
         {
-          "uid": "string (generate a unique identifier combining job title and date, e.g. 'web-dev-2023-04-22')",
+          "uid": "string (will be replaced with UUID, leave empty or null)",
           "title": "string",
           "date_started": "YYYY-MM-DD or null",
           "date_ended": "YYYY-MM-DD or null",
@@ -83,10 +89,7 @@ def process_jobs_with_openai(content):
     }
 
     Important parsing rules:
-    1. Generate a unique uid by combining job title and date in kebab-case (lowercase with hyphens)
-       - Use date_started if available, otherwise date_posted
-       - Remove special characters and spaces from title
-       - Example: "Web Developer needed" started on "2023-04-22" becomes "web-developer-needed-2023-04-22"
+    1. Leave the uid field empty or null - it will be generated automatically
     2. Extract full text of feedback and cover letters
     3. Convert all monetary values to numbers without currency symbols
     4. Parse dates into YYYY-MM-DD format
@@ -136,6 +139,10 @@ def process_jobs_with_openai(content):
                 chunk_result = json.loads(collected_response)
                 if 'jobs' in chunk_result:
                     jobs_in_chunk = chunk_result['jobs']
+                    # Add UUIDs to jobs if missing
+                    for job in jobs_in_chunk:
+                        if 'uid' not in job or not job['uid']:
+                            job['uid'] = generate_uid()
                     all_jobs.extend(jobs_in_chunk)
                     print(f"Successfully processed {len(jobs_in_chunk)} jobs from chunk {i}")
                 else:

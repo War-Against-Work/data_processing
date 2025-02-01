@@ -113,7 +113,6 @@ def init_pinecone(force_recreate=True):
         pc.create_index(
             name=INDEX_NAME,
             dimension=1536,
-            dimension=1536,
             metric='cosine',
             spec=ServerlessSpec(
                 cloud='aws',
@@ -212,6 +211,13 @@ def process_jobs_history(jobs_data):
         {feedback_text}
         """
         
+        # Safely convert numeric values
+        def safe_float(value, default=0.0):
+            try:
+                return float(value) if value is not None else default
+            except (ValueError, TypeError):
+                return default
+
         metadata = {
             "type": "job_history",
             "source": "jobs_history.json",
@@ -219,15 +225,15 @@ def process_jobs_history(jobs_data):
             "title": str(job['title']),
             "date_started": str(job.get('date_started') or "N/A"),
             "date_ended": str(job.get('date_ended') or "N/A"),
-            "total_earned": float(job.get('total_earned', 0)),
-            "hourly_rate": float(job.get('hourly_rate', 0)),
-            "hours_spent": float(job.get('time_spent_hours', 0)),
+            "total_earned": safe_float(job.get('total_earned')),
+            "hourly_rate": safe_float(job.get('hourly_rate')),
+            "hours_spent": safe_float(job.get('time_spent_hours')),
             "job_type": str(job.get('job_details', {}).get('job_type') or "N/A"),
             "experience_level": str(job.get('job_details', {}).get('experience_level') or "N/A"),
-            "client_rating": float(feedback_rating),
+            "client_rating": safe_float(feedback_rating),
             "client_location": str(job.get('client_info', {}).get('location') or "N/A"),
-            "client_total_spent": float(job.get('client_info', {}).get('total_spent', 0)),
-            "client_hires": int(job.get('client_info', {}).get('hires', 0)),
+            "client_total_spent": safe_float(job.get('client_info', {}).get('total_spent')),
+            "client_hires": int(job.get('client_info', {}).get('hires', 0) or 0),
             "has_feedback": bool(feedback_text),
             "has_cover_letter": bool(job.get('cover_letter')),
             "processing_timestamp": int(time.time())

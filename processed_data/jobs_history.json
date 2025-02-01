@@ -2,6 +2,7 @@
   "total_jobs": 26,
   "jobs": [
     {
+      "uid": "job-7fd2c649-a2b3-40fe-adbb-ffd058c7fc17",
       "title": "Web Developer needed to fix an issue with parallax on homepage",
       "date_started": "2023-04-22",
       "date_ended": "2023-05-04",
@@ -17,7 +18,7 @@
         }
       },
       "job_details": {
-        "job_description": "We are relaunching our website and our web designer is having issues adding text below the parallax images on our front page. It may involve some scripting but we'd like a navigation button over the images (about 5) and text below each",
+        "job_description": "We are relaunching our website and our web designer is having issues adding text below the parallax images on our front page. It may involve some scripting but we'd like a navigation button over the images (about 5) and text below each.",
         "job_type": "Hourly",
         "estimated_hours_per_week": "Less than 30 hrs/week",
         "estimated_duration": "Less than 1 month",
@@ -36,6 +37,7 @@
       "cover_letter": "Thank you for the opportunity to bid on your project. As an experienced web developer with a strong background in HTML, CSS, and JavaScript, I am confident that I can help you solve the issue you're having with adding text below the parallax images on your front page.\n\nI understand that you'd like to add navigation buttons over the images and text below each one. This may require some custom coding to ensure that everything is properly aligned and responsive across different screen sizes.\n\nI would be happy to provide you with examples of my previous work upon request. Additionally, I am available to start work immediately and can provide you with regular updates throughout the project.\n\nPlease let me know if you have any questions or concerns, or if you would like to discuss this project further.\n\nBest regards,"
     },
     {
+      "uid": "job-9708fbaf-4315-44ee-93e8-96f0425e8756",
       "title": "JavaScript Expert For Google Tag Manager",
       "date_started": null,
       "date_ended": null,
@@ -48,7 +50,7 @@
         "freelancer_feedback_given": null
       },
       "job_details": {
-        "job_description": "Our Company - Hi, I've started an analytics agency where I help companies set up Google Tag Manager, Google Analytics, and all of their tracking needs.\n\nPosition Details - I'm looking for a JavaScript developer that can help with custom JavaScript in Google Tag Manager.",
+        "job_description": "Hi, I've started an analytics agency where I help companies set up Google Tag Manager, Google Analytics, and all of their tracking needs. I'm looking for a JavaScript developer that can help with custom JavaScript in Google Tag Manager.",
         "job_type": "Hourly",
         "estimated_hours_per_week": "Less than 30 hrs/week",
         "estimated_duration": null,
@@ -67,6 +69,7 @@
       "cover_letter": "Thanks for the invite, would be happy to fix this up for you. Will be available tomorrow to take a look, and on my phone today if you want to chat about anything.\nThanks\n-Aaron"
     },
     {
+      "uid": "job-50c9bf40-ee0a-4eea-95f9-8e0456d7c4ce",
       "title": "WEBFLOW Trainer / Teacher",
       "date_started": "2023-04-23",
       "date_ended": "2023-04-26",
@@ -104,6 +107,7 @@
       "cover_letter": "Hi there,\n\nI am happy to help you with your Webflow training needs. I specialize in Webflow and can provide you with customized training that is specific to your needs.\n\nTo address your requirements, I will provide detailed answers to your questions and help you complete the task yourself. You can expect clear communication and timely responses from me throughout the process.\n\nHere is what I propose for your training:\n\n1. Replacement of the 3 pictures in the top 3 sliders with new transparent pics /same type and style:\n- We will use the \"CMS Image\" component to upload new images to your Webflow site\n- I will provide step-by-step instructions on how to replace images within the Webflow CMS and show you how to adjust settings such as size and style\n\n2. Addition of a segment right underneath the top page of Upwork testimonials:\n- We will use the \"Rich Text\" component to add a new segment to your Webflow site\n- I will provide detailed instructions on how to add text, images, and other media to your new segment, and show you how to format it for optimal visual appeal\n\n3. Addition of contact buttons in the same places that your current site showcases:\n- We will use the \"Button\" component to add contact buttons to your Webflow site\n- I will provide guidance on how to create custom buttons that fit with your website's design and how to add them to specific locations on your site\n\nPlease let me know if you have any questions or need more information.\n\nThank you for your consideration.\n\nBest regards,\nAaron"
     },
     {
+      "uid": "job-f84e63ff-3eff-4f21-b4f9-e82b4aea348d",
       "title": "WIX run through",
       "date_started": "2023-04-12",
       "date_ended": "2023-04-20",
@@ -138,6 +142,7 @@
       "cover_letter": "Hi, came across your post and feel like I can help you out with your wix project. I've done a ton of sites in wix, and have spent also spent a lot of time helping others learn and navigate their sites so they don't need to call a developer every time they want to make changes in the future. I would be happy to take a run through and make any light fixes that you might need, I can notate those changes so you know what I did, and then when you have time we can work together on answering any questions you may have about the system itself.\nHope to hear from you!\nThanks,\n-Aaron"
     },
     {
+      "uid": "job-27de42f1-a4ac-4a44-95bb-8e89564a7c5b",
       "title": "Cumulative Layout Shift consultation",
       "date_started": "2023-04-18",
       "date_ended": "2023-04-20",
@@ -163,7 +168,7 @@
         "experience_level": "Expert",
         "budget": null,
         "hourly_range": null,
-        "company_description": "I am willing to pay higher rates for the most experienced freelancers"
+        "company_description": null
       },
       "client_info": {
         "rating": 5.0,
@@ -175,6 +180,7 @@
       "cover_letter": "Hi, came across your post and feel I can help you track this issue down. I have a deep working knowledge of all google optimization products, and how to properly use their features and results to ensure consistent performance. In this case I think a discussion about how GSC and lighthouse etc work differently is necessary.\nHope to hear from you.\nThanks,\n-Aaron\n\nDescribe how you would approach this project, where lab tools don't provide an accurate representation of field measurements.\nI would compare results between tools, and also use some non-google measurements on individual pages and see where there may be an issue on an individual page that is effecting the group average."
     },
     {
+      "uid": "job-156cb8a3-bd3f-4f2b-8b0a-01ced024e857",
       "title": "Website code Css-Javascript minification",
       "date_started": "2023-04-12",
       "date_ended": "2023-04-12",
@@ -193,7 +199,7 @@
         }
       },
       "job_details": {
-        "job_description": "Im having error codes of too much JS that are possibly effecting my SEO and usability ( loading times )\nI am unable to use googles structured data helper because my images wont load fast enough. this should be a simple job for the right person. This is a square space website.",
+        "job_description": "Im having error codes of too much JS that are possibly effecting my SEO and usability (loading times)\nI am unable to use googles structured data helper because my images wont load fast enough. this should be a simple job for the right person. This is a square space website.",
         "job_type": "Hourly",
         "estimated_hours_per_week": "Less than 30 hrs/week",
         "estimated_duration": "Less than 1 month",
@@ -212,6 +218,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-c985369c-346b-4b46-8143-ae21065e872d",
       "title": "Fix CSS Spacing on Employee Directory on Wordpress site",
       "date_started": "2022-06-15",
       "date_ended": "2022-06-20",
@@ -249,6 +256,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-c77c1d68-ff23-4b87-b8e5-e81872bfa305",
       "title": "Build responsive site with complex payment functionality.",
       "date_started": "2022-06-10",
       "date_ended": "2022-06-16",
@@ -286,6 +294,7 @@
       "cover_letter": "I would love to hear more about this, and see what your actual requirements are. This is a pretty low budget for any site with payment processing features, but I am always up for a challenge! Let me know when you have time to discuss!\nThanks\n-Aaron"
     },
     {
+      "uid": "job-11a205c4-7f40-463e-b70b-562fdee3ef46",
       "title": "Developer needed for creating microsite in Craft CMS",
       "date_started": "2021-07-02",
       "date_ended": "2022-02-17",
@@ -297,7 +306,7 @@
         "client_feedback_given": "No feedback given",
         "freelancer_feedback_given": {
           "rating": 5.0,
-          "text": null
+          "text": ""
         }
       },
       "job_details": {
@@ -320,6 +329,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-f750b984-1184-425b-b5de-388f5fe52e2d",
       "title": "Need to design a new website",
       "date_started": "2021-04-08",
       "date_ended": "2021-12-17",
@@ -354,6 +364,7 @@
       "cover_letter": "Hi! I just came across your post and believe I can re design and develop your wordpress site at www.Allprimepumps.com. Of the examples you gave and based on your current site setup, I think https://www.liquaflowpump.com/ is a great choice to work towards with your new design. The balance of easy to read product descriptions, images, as well as general information about the company and their offerings is perfect for a company like yours. I can also make sure we use the most up to date search engine optimization techniques so your new site ranks as high as possible in search results.\nI have designed and built countless wordpress sites, here are a handful I am particularly proud of recently:\nhttps://www.mjackelectric.com/\nhttps://plainfancycabinetry.com/\nhttps://lacavacenter.com/\n\nAdditionally, I have a long term client (mrosupply.com) that is an industrial parts supplier, and my work with them has included addressing the presentation of industrial parts and services to a range of client types. Landing pages, seo, and product site design has been a huge part of our engagement the last year.\n\nSend me a message so we can discuss your needs, and see how i can help you relaunch your site with an amazing new design that will set you apart from your competitors!\nthanks\n-Aaron"
     },
     {
+      "uid": "job-faeed77b-c285-45b6-8523-9723f09f1a2c",
       "title": "Boutique Investment Bank in the venture capital space needs website makeover & design",
       "date_started": "2021-09-12",
       "date_ended": "2021-10-06",
@@ -364,7 +375,7 @@
       "job_feedback": {
         "client_feedback_given": {
           "rating": 5.0,
-          "text": null
+          "text": ""
         },
         "freelancer_feedback_given": {
           "rating": 5.0,
@@ -391,6 +402,7 @@
       "cover_letter": "Hi, just came across your job post and feel like I would be a perfect fit to design and build an overhauled vision for your venture capital site. I have built a number of similar sites in the past, and can ensure a fresh, iconic, and modern design with a strong focus on user experience. I am available to work on this with you ASAP, and am based on the east coast so able to communicate easily by message and phone any time.\nCheck out some similar sites I have launched in the past couple years:\nhttps://cahoots.com/\nhttp://www.bridgeps.com/\nhttps://alpinegrovepartners.com/\nhttps://www.goodmanadvisorygroup.com/\nhttps://covalandersoncoval.com/\n\nHope to hear from you,\nAaron"
     },
     {
+      "uid": "job-fb8d646d-f1c6-4f50-9039-3a78f19ccdf3",
       "title": "WordPress expert (Modify, clean, and expand current site)",
       "date_started": "2021-07-16",
       "date_ended": "2021-08-21",
@@ -428,6 +440,7 @@
       "cover_letter": "Hi, just came across your job post and feel I would be a perfect fit for getting your site fixed up after it was hijacked. In addition to taking care of the design and content updates, I can also make a recommendation on getting out of wordpress into a low cost and flexible platform that may better suit your needs. Unfortunately once you have been targeted once, it is typically the case that you are targeted repeatedly in the future. While this is not true 100% of the time, I would never advise that you spend any money fixing your site before ensuring you were in a position to defend future attacks without either losing your investment or requiring more work down the road. I am sure you have taken steps to mitigate, but I am happy to talk to you about options no matter what the current situation."
     },
     {
+      "uid": "job-670e7dba-7ea5-417e-9845-1790b5aad029",
       "title": "Website rebuild",
       "date_started": "2021-06-30",
       "date_ended": "2021-08-07",
@@ -465,6 +478,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-09becfa5-b60b-46c6-974a-1260b529113e",
       "title": "Wordpress Developer to redesign a website with Figma (18+ NSFW)",
       "date_started": "2021-06-08",
       "date_ended": "2021-06-19",
@@ -502,7 +516,8 @@
       "cover_letter": "Hi, Just came across your job and I can definitely help you get your wordpress site design locked in. I am fine working with 18+ content, and am available by chat or conference to discuss anytime (based on the east coast)\nHope to hear from you!\nThanks,\n-Aaron"
     },
     {
-      "title": "Shopify website developper. (Hand made product)",
+      "uid": "job-fff4561f-a70f-4877-be70-fecaf038b062",
+      "title": "Shopify website developer. (Hand made product)",
       "date_started": "2021-02-09",
       "date_ended": "2021-06-10",
       "date_posted": null,
@@ -536,6 +551,7 @@
       "cover_letter": "Hi! I just read your job posting and believe I can help you launch your commerce site. I have worked with countless startups over the last decade, and have enjoyed many successful site launches in that time. I have experience with everything from go-to-market planning to fundraising and everything in between. I am a trained designer turned developer, and can offer my experience across the stack of requirements and challenges launching a product online.\nSince I have specific experience bringing a product online from the concept stage, I can assist in all the initial requirements of getting an online brand fired up. From the store design and development itself, to any informational content, social media, marketing partners, mailing list set up, customer support channels, you name it.\n\nSend me a message and lets discuss how I can help you launch your product successfully!\nThanks,\nAaron"
     },
     {
+      "uid": "job-e06bde56-f2f2-4bf7-9891-97f75217a5e7",
       "title": "Website Database Tables",
       "date_started": "2021-05-21",
       "date_ended": "2021-05-31",
@@ -546,7 +562,7 @@
       "job_feedback": {
         "client_feedback_given": {
           "rating": 5.0,
-          "text": "Rating is 5.0 out of 5.\n5.00\nOverall rating\n5.00\nSkills\n5.0\nQuality\n5.0\nAvailability\n5.0\nDeadlines\n5.0\nCommunication\n5.0\nCooperation\n5.0"
+          "text": "Overall rating\n5.00\nSkills\n5.0\nQuality\n5.0\nAvailability\n5.0\nDeadlines\n5.0\nCommunication\n5.0\nCooperation\n5.0"
         },
         "freelancer_feedback_given": {
           "rating": 5.0,
@@ -573,6 +589,7 @@
       "cover_letter": "Just came across your post and can definitely design and develop an interface on your website to display your data records. I would need to see your website, and the data sample to give you some idea on how I might approach this. I can say with certainty that I am qualified and capable, regardless of scope, scale, and existing technology.\nI also am based on the east coast, so can be available via text, chat, and call to discuss the project at just about any time. I have time in my schedule to begin work on this right away, hope to hear from you!\n-Aaron"
     },
     {
+      "uid": "job-b06c69e3-0d56-48c1-8941-47036bf2f1bb",
       "title": "Need help changing header colors and fixing tablet responsiveness.",
       "date_started": "2021-05-21",
       "date_ended": "2021-05-21",
@@ -610,6 +627,7 @@
       "cover_letter": "Hi! Just came across your job post and can fix your issues with the website header. I took a look and believe I can see the issue at https://promowood.com/product/elijah-craig-small-batch-barrel-head/ and other product pages, so I do know how to solve this problem. I can also advise and fix any mobile issues you may be experiencing.\nI am available today to get this done for you, and can speak via text, chat or voice\nHope to hear from you!\n-Aaron"
     },
     {
+      "uid": "job-ec1bbe73-3ba8-4846-9cf8-4eee60741587",
       "title": "HTML / CSS specialist - landing page builder",
       "date_started": "2021-02-08",
       "date_ended": "2021-04-26",
@@ -635,7 +653,7 @@
         "experience_level": "Intermediate",
         "budget": null,
         "hourly_range": null,
-        "company_description": "I am looking for a mix of experience and value"
+        "company_description": null
       },
       "client_info": {
         "rating": 4.88,
@@ -644,9 +662,10 @@
         "total_spent": 3850000,
         "hires": 1802
       },
-      "cover_letter": "Hi! Just read through your post and would love to work with you designing and developing landing pages for your commerce site. I was not able to figure out what CMS or platform your site is built with, so while I can't be sure I have used the exact system you are using in the past, I am confident I have experience with just about every platform out there. I have built and maintained countless sites, including commerce, and have spent a lot of time refining and streamlining landing pages, conversion funnels, and remarketing plans. I am available by chat, phone and video as needed. I would love to hear more about your needs, and learn more about the commerce system you are using and how I can work with you in the near future hope to hear from you! -Aaron What time zone are you in? I am currently in central time, will be in and out of Eastern time by the end of the month. What times do you prefer to work? I typically am online as needed by specific clients, based on their availability, but if i had to pick it would be between 10am-2pm and again between 7pm and midnight. I am very flexible, and happy to accommodate your schedule. Can you show me a HTML page you have made? I have built landing pages in the past in and outside of the primary content/product management systems for clients such as: https://supplyit.com - this company provides software used by restaurants in their business and logistics chain. I created landing pages for specific chains (such as dunkin donuts) that targeted owners… more"
+      "cover_letter": "Hi! Just read through your post and would love to work with you designing and developing landing pages for your commerce site. I was not able to figure out what CMS or platform your site is built with, so while I can't be sure I have used the exact system you are using in the past, I am confident I have experience with just about every platform out there. I have built and maintained countless sites, including commerce, and have spent a lot of time refining and streamlining landing pages, conversion funnels, and remarketing plans. I am available by chat, phone and video as needed. I would love to hear more about your needs, and learn more about the commerce system you are using and how I can work with you in the near future hope to hear from you! -Aaron What time zone are you in? I am currently in central time, will be in and out of Eastern time by the end of the month. What times do you prefer to work? I typically am online as needed by specific clients, based on their availability, but if i had to pick it would be between 10am-2pm and again between 7pm and midnight. I am very flexible, and happy to accommodate your schedule. Can you show me a HTML page you have made? I have built landing pages in the past in and outside of the primary content/product management systems for clients such as: https://supplyit.com - this company provides software used by restaurants in their business and logistics chain. I created landing pages for specific chains (such as dunkin donuts) that targeted owners…"
     },
     {
+      "uid": "job-5940cb44-920a-4100-ae40-4493496b62cf",
       "title": "Experienced Sr. Full Stack Developer with Good Communication Skills",
       "date_started": "2021-03-17",
       "date_ended": "2021-03-19",
@@ -684,6 +703,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-03d73c5d-4ab0-4c8b-a41f-4cd1a2f73ba3",
       "title": "Workpress designer for high school project",
       "date_started": "2021-02-08",
       "date_ended": "2021-02-09",
@@ -721,6 +741,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-f1be2512-3dbd-4f99-bbe0-d76bf14dc68e",
       "title": "Assistance with WordPress Website",
       "date_started": "2021-01-13",
       "date_ended": "2021-01-14",
@@ -746,7 +767,7 @@
         "experience_level": "Intermediate",
         "budget": null,
         "hourly_range": null,
-        "company_description": "I am looking for a mix of experience and value"
+        "company_description": null
       },
       "client_info": {
         "rating": 4.97,
@@ -758,6 +779,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-ae91cae1-6a58-4a5c-bc22-221653ee7cc2",
       "title": "Optimize my Wordpress Website",
       "date_started": "2021-01-08",
       "date_ended": "2021-01-08",
@@ -795,6 +817,7 @@
       "cover_letter": "Hi! I would love to work with you to optimize your wordpress site, and help you understand what needs to be done along the way. I have worked for over ten years on wordpress among other CMS' and am an expert in the development, customization, and maintenance required to run a top notch site.\n\nYou can check out some of my recent wordpress work at these sites:\nhttps://www.kleducation.org/\nhttps://lacavacenter.com/\nhttp://www.loftsatbeacon.com/\nhttp://www.bridgeps.com/\nhttps://www.lgallp.com/\nhttps://titaninsured.com/\nhttps://www.baconsports.com/\nhttps://covalandersoncoval.com/\nhttps://www.alpinegrovepartners.com/\n\nI hope to hear from you!\n-Aaron\n\nDo you have suggestions to make this project run successfully?\nI am available for communication via message, chat, and phone as needed to ensure job requirements are clear and that work is accomplished efficiently and expertly along the way. The key to any successful project is ensuring that communication is clear throughout, and expectations are set and met fluidly. I also use online project management tools as well as google apps for documentation in order to track and notate progress from start to finish."
     },
     {
+      "uid": "job-d0f657ad-f2b4-4f6c-b2c4-dba8334d390c",
       "title": "need to setup facebook page, facebook manager and shopify",
       "date_started": "2020-12-10",
       "date_ended": "2020-12-11",
@@ -832,6 +855,7 @@
       "cover_letter": "Hi! Happy to help you get set up on the integrations you need between shopify, facebook, etc. I have built and maintained countless shopify sites, as well as optimized for social integration and marketing needs.\n\nDo you know how to make a shopify account 2020?\nYes.\nDo you know how to create business ads manager, knows facebook pixel, or anything concerning running ads on facebook?\nYes.\ndo you know how to access facebook page or create one?\nYes.\ndo you know how to connect facebook ad pixel, facebook account and messenger to shopify?\nYes.\nHow can I be sure that I have 100% control of my accounts if you are the one who is going to create it?\nI can advise you on how to create the account privileges required to then simply add me as an admin user and later remove that account. If you do need me to actually create the account itself, I can do that, and then reassign access control to you where you would then change the password. Facebook et al is very good at notifying access, so there should not be any concerns regarding security after hand off"
     },
     {
+      "uid": "job-039b6695-1eec-47db-ae41-ef5701e11313",
       "title": "Experienced Web Designer Needed to Create Responsive HTML Tables",
       "date_started": "2020-11-02",
       "date_ended": "2020-11-18",
@@ -869,6 +893,7 @@
       "cover_letter": "Hi Jessica! I would be happy to work with you on this, and have availability through the dates your posting mentioned. Let me know when you would like to connect and discuss further!\nThanks for the invite!\n-Aaron"
     },
     {
+      "uid": "job-c5645fc7-8dae-4837-ab6a-b574c7b74208",
       "title": "Drag and Drop on top",
       "date_started": "2020-10-22",
       "date_ended": "2020-11-10",
@@ -906,6 +931,7 @@
       "cover_letter": null
     },
     {
+      "uid": "job-eb9a8c9d-a71c-4ff8-975b-a37cd1525c8f",
       "title": "one screen UI Mockup **need fast by Monday",
       "date_started": "2020-10-18",
       "date_ended": "2020-10-18",
@@ -931,7 +957,7 @@
         "experience_level": "Expert",
         "budget": null,
         "hourly_range": null,
-        "company_description": "I am willing to pay higher rates for the most experienced freelancers"
+        "company_description": null
       },
       "client_info": {
         "rating": 4.7,
@@ -940,7 +966,7 @@
         "total_spent": 8719.0,
         "hires": 20
       },
-      "cover_letter": "Hello! I would love to help you get this page design done quickly and expertly. I have designed, built and maintained countless sites and products for clients ranging from start up health products to major label musical groups and blockbuster movies. I've spent more than 10 years refining my skills in the industry, and would love the opportunity to work with you. I am based on the east coast so can be available by phone or video chat if we need to hammer out details or review work.\nhope to hear from you!\n-Aaron"
+      "cover_letter": "Hello! I would love to help you get this page design done quickly and expertly. I have designed, built and maintained countless sites and products for clients ranging from start up health products to major label musical groups and blockbuster movies. I've spent more than 10 years refining my skills in the industry, and would love the opportunity to work with you. I am based on the east coast so can be available by phone or video chat if we need to hammer out details or review work. hope to hear from you! -Aaron"
     }
   ]
 }
