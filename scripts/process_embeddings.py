@@ -226,10 +226,9 @@ async def _derive_domain_llm(job_description: str, client: openai.OpenAI) -> Lis
         completion = client.chat.completions.create(
             model="o3-mini",
             messages=messages,
-            temperature=0.1,
             reasoning_effort="medium",
             response_format={"type": "json_object"},
-            max_tokens=150
+            max_completion_tokens=1000
         )
         
         try:
@@ -268,9 +267,8 @@ async def _analyze_style_and_tone(text: str, client: openai.OpenAI) -> dict:
         completion = client.chat.completions.create(
             model="o3-mini",
             messages=messages,
-            temperature=0.1,
             reasoning_effort="medium",  # Using medium reasoning effort
-            max_tokens=250,
+            max_completion_tokens=1000,
             response_format={"type": "json_object"}
         )
         
@@ -597,7 +595,7 @@ def main():
     
     # Load only jobs data
     print("Loading job history documents...")
-    with open("jobs_history.json", "r", encoding="utf-8") as f:
+    with open("data_processing/raw_data/jobs_data.json", "r", encoding="utf-8") as f:
         jobs_data = json.load(f)
     
     # Process only job history documents
