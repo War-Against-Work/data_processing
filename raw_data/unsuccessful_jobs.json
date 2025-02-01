@@ -1,0 +1,46 @@
+[
+  {
+    "title": "Create a GIF from OptimalBlue Widget",
+    "status": "Withdrawn: Applied by mistake",
+    "proposal_date": "",
+    "job_description": "Develop a system that automatically captures and updates a screenshot of the mortgage rate widget from Optimal Blue and makes it available for:\n\nEmail embedding \u2013 A hosted, non-clickable image that updates daily.\nSMS/MMS sharing \u2013 A direct link to the latest image, sent via text.\n\nRequirements\nAutomated Screenshot Capture\nSource URL: https://www2.optimalblue.com/OBMMI/widget.php\nCapture a full-page screenshot of the widget.\nCrop/resize if needed to fit within 750px width for email compatibility.\nSave image as latest-mortgage-rates.jpg.\n\nHosting & Image Delivery\nStore the image on a publicly accessible server (e.g., AWS S3, Cloudflare, Firebase, or a simple web server).\nEnsure the image overwrites the previous version (same URL, so email/SMS links remain valid).\nGenerate a publicly accessible URL (e.g., https://yourdomain.com/latest-mortgage-rates.jpg).\n\nEmail Integration (Non-Clickable Image)\nProvide an img tag for embedding in email:\n\nimg src=\"https://yourdomain.com/latest-mortgage-rates.jpg\" alt=\"Today's Mortgage Rates\" width=\"750\"\nEnsure the image auto-updates daily.\n\nSMS/MMS Integration\nAllow the latest image to be shared via SMS/MMS.\nUse Twilio API (or an alternative SMS provider) to send MMS messages.\n\n5. Automation & Scheduling\nAutomate the screenshot capture and image upload once per day (cron job or cloud function).\nAutomate daily SMS/MMS sending to a predefined list of contacts (if applicable). less\nMore/Less about",
+    "cover_letter": "Hi! I understand you're looking to create a system that automatically captures and updates a screenshot of the mortgage rate widget from Optimal Blue, making it available as a hosted image for email embedding and SMS/MMS sharing. Here's how I plan to approach this project: - Implement a web scraping tool to capture the widget screenshot daily. - Resize the image for compatibility with various email platforms. - Host the image on a public server for seamless access. - Integrate with email and SMS platforms to deliver the latest image efficiently. My relevant experience includes: - Successfully implementing automated content capture and delivery systems for financial data. - Expertise in using Python, Selenium, AWS S3, and Twilio API for similar projects. I\u2019d love to discuss this project further and explore how I can help you achieve your goals. Best regards, Aaron\n\nPS - I am testing out automation working with upwork, so please excuse any errors or issues in the proposal process!",
+    "client_info": {
+      "location": "United States",
+      "city": "Tempe",
+      "jobs_posted": "7 jobs posted",
+      "hire_info": "43% hire rate, 1 open job",
+      "total_spent": "$1.7K",
+      "hires_info": "3 hires, 0 active",
+      "avg_hourly_rate": "$74.98 /hr avg hourly rate paid",
+      "hours": "15 hours",
+      "company_size": "Large company (100-1,000 people)",
+      "member_since": "Member since Mar 16, 2019",
+      "rating": "5.0",
+      "reviews": "5.00 of 3 reviews",
+      "payment_verified": "Payment method verified"
+    },
+    "outcome": ""
+  },
+  {
+    "title": "Website Development for Business",
+    "status": "",
+    "proposal_date": "",
+    "job_description": "We are looking for a talented web developer to create a professional website for our business. The ideal candidate should have a strong portfolio showcasing their previous work in web design and development. The website will serve as our online presence, highlighting our services and engaging with our customers effectively. Your expertise in responsive design, SEO best practices, and user-friendly interfaces will be crucial in creating a successful site. If you are passionate about web development and can deliver high-quality results, we would love to hear from you! less\nMore/Less about",
+    "cover_letter": "I've helped numerous businesses establish compelling online presences through strategic web development and design. My approach combines user-centric design principles with modern development practices to create websites that not only look professional but effectively convert visitors into customers. Having worked with brands like Warner Brothers and the New York Times, I understand how to balance aesthetic appeal with functional requirements. I'd be excited to discuss your specific needs and share relevant examples from my portfolio.\nThanks,\n-Aaron",
+    "client_info": {
+      "location": "USA",
+      "city": "Coopersville",
+      "jobs_posted": "1 job posted",
+      "hire_info": "100% hire rate",
+      "total_spent": "$1.5K",
+      "hires_info": "1 hire, 1 active",
+      "company_size": "Small company (2-9 people)",
+      "member_since": "Member since Dec 8, 2024",
+      "rating": "0",
+      "reviews": "0.00 of 0 reviews",
+      "payment_verified": "Payment method verified"
+    },
+    "outcome": ""
+  }
+]
