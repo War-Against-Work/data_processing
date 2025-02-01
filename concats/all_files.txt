@@ -1,0 +1,1508 @@
+
+=== frontend/public/vite.svg ===
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+=== frontend/src/assets/react.svg ===
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+=== frontend/src/components/chat/ChatInterface.module.css ===
+
+:root {
+  --border-radius: 30px;
+  --border-radius-large: 50px;
+  --border-radius-small: 20px;
+}
+
+.chatContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.leftColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  background-color: #E4DFD9;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100px; /* Add space for input area */
+}
+
+.inputArea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background-color: #E4DFD9;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rightColumn {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+.finalAnswerContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #222;
+}
+
+.finalAnswerContainer h2 {
+  margin-bottom: 24px;
+  color: #333;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+.finalAnswerItem {
+  background-color: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #222;
+}
+
+.inputField {
+  flex-grow: 1;
+  margin-right: 12px;
+}
+
+.inputField :global(.MuiOutlinedInput-root) {
+  border-radius: var(--border-radius);
+  height: 48px;
+}
+
+.inputField :global(.MuiOutlinedInput-notchedOutline) {
+  border: 2px solid #e0e0e0;
+}
+
+.inputField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #e0e0e0;
+}
+
+.thoughtsToggle {
+  color: #C2B9B4;
+}
+
+.thoughtsToggleActive {
+  color: #F88E67;
+}
+
+.visualizationColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+}
+
+.agentVisualizationContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.agentConversationColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.agentConversationPanel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #E4DFD9;
+}
+
+/* Keep any existing styles you had in this file */
+
+.loadingIndicator {
+  display: none;
+  position: absolute;
+  bottom: 115px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 5px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.messageGroup {
+  margin-bottom: 15px;
+}
+
+.finalAnswerContent {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.adCreativeContent {
+  background: white;
+  border-radius: 8px;
+}
+
+.adCreativeContent h3 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.adField {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.adField strong {
+  display: block;
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.copyableContent {
+  padding: 12px;
+  background: white;
+  border-radius: 4px;
+  border: 1px dashed #dee2e6;
+  cursor: text;
+  position: relative;
+}
+
+.copyableContent:hover {
+  background: #fff;
+  border-color: #adb5bd;
+}
+
+.copyableContent ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.copyableContent li {
+  margin-bottom: 8px;
+}
+
+.targetingSection {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.targetingSection h4 {
+  color: #333;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.demographics {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.demographics h5 {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+.sources {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+}
+
+.sources h4 {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.sources ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.sources li {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.confidence {
+  margin-top: 12px;
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.adCreativeWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.errorMessage {
+  color: #d32f2f;
+  padding: 16px;
+  background: #ffebee;
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.proposalWrapper {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.proposalWrapper :global(.main-proposal) {
+  margin-bottom: 30px;
+}
+
+.proposalWrapper :global(.main-proposal p) {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.proposalWrapper :global(.main-proposal ul) {
+  margin: 16px 0;
+  padding-left: 20px;
+}
+
+.proposalWrapper :global(.main-proposal li) {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.proposalWrapper :global(.analysis) {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.proposalWrapper :global(.analysis h3) {
+  margin-bottom: 16px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.proposalWrapper :global(.analysis p) {
+  line-height: 1.5;
+}
+
+.proposalText {
+  white-space: pre-wrap;
+}
+=== frontend/src/components/chat/ChatInterface.tsx ===
+
+import React, { useState, useRef, useEffect } from 'react';
+import { TextField, IconButton } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import styles from './ChatInterface.module.css';
+import { v4 as uuidv4 } from 'uuid';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { addMessage, setLoading, setActiveProposal } from '../../store/chat';
+import { useSendMessageMutation } from '../../store/api';
+import { MessageBubble } from './MessageBubble';
+import { ChatItem } from '../../types/chat';
+import { ProposalDisplay } from './ProposalDisplay';
+
+const ChatInterface: React.FC = () => {
+  const [inputValue, setInputValue] = useState('');
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector((state) => state.chat.messages);
+  const loading = useAppSelector((state) => state.chat.loading);
+  const currentResponse = useAppSelector((state) => state.chat.currentResponse);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [sendMessage] = useSendMessageMutation();
+  const activeProposal = useAppSelector((state) => state.chat.activeProposal);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, currentResponse]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    const chatMessage = {
+      message: inputValue.trim(),
+      type: 'chat_message' as const
+    };
+
+    const userMessage: ChatItem = {
+      id: uuidv4(),
+      type: 'user_message',
+      content: chatMessage.message,
+      timestamp: new Date().toISOString()
+    };
+
+    dispatch(addMessage(userMessage));
+    setInputValue('');
+
+    try {
+      dispatch(setLoading(true));
+      const response = await sendMessage(chatMessage).unwrap();
+      
+      if (response) {
+        const agentMessage: ChatItem = {
+          id: uuidv4(),
+          type: 'agent_message',
+          content: response.response || '',
+          timestamp: new Date().toISOString()
+        };
+        
+        dispatch(addMessage(agentMessage));
+        
+        if (response.proposal) {
+          dispatch(setActiveProposal(response.proposal));
+        }
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return (
+    <div className={styles.chatContainer}>
+      <div className={styles.leftColumn}>
+        <div className={styles.messagesContainer}>
+            {messages?.map((message: ChatItem) => (
+              message && message.type !== 'proposal' && (
+                <MessageBubble 
+                  key={message.id || 'fallback-key'} 
+                  message={message} 
+                />
+              )
+            ))}
+          {currentResponse && (
+            <MessageBubble
+              key="current-response"
+              message={{
+                id: 'current-response',
+                type: 'agent_message',
+                content: currentResponse,
+                timestamp: Date.now()
+              }}
+            />
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        
+        <div className={styles.inputArea}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.inputContainer}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Type your message..."
+                disabled={loading}
+                className={styles.inputField}
+              />
+              <IconButton 
+                type="submit" 
+                color="primary" 
+                disabled={loading}
+              >
+                <ArrowForwardIcon />
+              </IconButton>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div className={styles.rightColumn}>
+        {activeProposal && <ProposalDisplay proposal={activeProposal} />}
+      </div>
+    </div>
+  );
+};
+
+export default ChatInterface;
+=== frontend/src/components/chat/MessageBubble.module.css ===
+
+.messageBubble {
+  max-width: 70%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  word-wrap: break-word;
+}
+
+.userMessage {
+  align-self: flex-end;
+  background-color: #F88E67;
+  color: white;
+}
+
+.agentMessage {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.systemMessage {
+  align-self: left;
+  background-color: #f0f0f0;
+  color: #666;
+  font-size: 0.9em;
+  max-width: 50%;
+}
+
+.errorMessage {
+  align-self: center;
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  font-size: 0.9em;
+  max-width: 90%;
+}
+
+.thoughtMessage {
+  align-self: stretch;
+  background-color: #f5f5f5;
+  font-style: italic;
+  font-size: 0.85em;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  color: #666;
+}
+
+.messageHeader {
+  font-size: 0.75em;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 2px;
+}
+
+.userMessage .messageHeader {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.messageContent {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.messageContent pre {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  margin: 4px 0;
+}
+
+.messageContent code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.userMessage .messageContent pre,
+.userMessage .messageContent code {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.messageTimestamp {
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.4);
+  margin-top: 2px;
+}
+
+.userMessage .messageTimestamp {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.agentInteraction {
+  background-color: #e6f3ff;
+  border: 1px solid #b3d9ff;
+  align-self: center;
+}
+
+.messageMetadata {
+  display: flex;
+  gap: 8px;
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 4px;
+}
+
+.metadataItem {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.userMessage .messageMetadata {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.userMessage .metadataItem {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.analysisStep {
+  background-color: #f3f4f6;
+  border-left: 4px solid #3b82f6;
+  padding: 1rem;
+  margin: 0.5rem 0;
+}
+
+.researchStep {
+  background-color: #f3f4f6;
+  border-left: 4px solid #10b981;
+  padding: 1rem;
+  margin: 0.5rem 0;
+}
+
+.reviewStep {
+  background-color: #f3f4f6;
+  border-left: 4px solid #f59e0b;
+  padding: 1rem;
+  margin: 0.5rem 0;
+}
+
+.metadata {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.metadata span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+=== frontend/src/components/chat/MessageBubble.tsx ===
+
+import React from 'react';
+import { Paper, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { ProposalDisplay } from './ProposalDisplay';
+import { ChatItem, ProposalContent } from '../../types/chat';
+
+interface MessageBubbleProps {
+  message: ChatItem;
+}
+
+const BubbleContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  marginBottom: theme.spacing(1),
+}));
+
+const renderContent = (message: ChatItem) => {
+  switch (message.type) {
+    case 'proposal':
+      return message.content && typeof message.content === 'object' ? (
+        <ProposalDisplay proposal={message.content as ProposalContent} />
+      ) : null;
+    default:
+      return <Box>{typeof message.content === 'string' ? message.content : ''}</Box>;
+  }
+};
+
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+  const isUser = message.type === 'user_message';
+  
+  return (
+    <BubbleContainer sx={{ justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
+      <Paper
+        elevation={1}
+        sx={{
+          p: 2,
+          maxWidth: '70%',
+          bgcolor: isUser ? 'primary.light' : 'background.paper',
+          color: isUser ? 'primary.contrastText' : 'text.primary',
+        }}
+      >
+        {renderContent(message)}
+      </Paper>
+    </BubbleContainer>
+  );
+};
+=== frontend/src/components/chat/MessageList.module.css ===
+
+.messageList {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .messageBubble {
+    max-width: 80%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: var(--border-radius);
+    word-wrap: break-word;
+  }
+  
+  .userMessage {
+    align-self: flex-end;
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .agentMessage {
+    align-self: flex-start;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+  }
+  
+  .thoughtBubble {
+    align-self: flex-start;
+    max-width: 70%;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-radius: var(--border-radius);
+    background-color: #f5f5f5;
+    color: #555;
+    font-style: italic;
+    font-size: 0.9em;
+    line-height: 1.3;
+  }
+  
+  .thoughtLabel {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #666;
+    font-size: 0.85em;
+  }
+  
+  .animatedChar {
+    display: inline-block;
+    position: relative;
+    animation: revealChar 0.5s forwards;
+  }
+  
+  .animatedChar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: currentColor;
+    animation: fadeBackground 0.5s forwards;
+  }
+  
+  @keyframes revealChar {
+    0% { color: transparent; }
+    100% { color: inherit; }
+  }
+  
+  @keyframes fadeBackground {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  /* Keep any existing styles you had in this file */
+=== frontend/src/components/chat/MessageList.tsx ===
+
+// MessageList.tsx
+
+import React, { memo } from 'react';
+import { MessageBubble } from './MessageBubble';
+import styles from './MessageList.module.css';
+import { ChatItem } from '../../types/chat';
+
+interface MessageListProps {
+  messages: ChatItem[];
+}
+
+const MessageList: React.FC<MessageListProps> = memo(({ messages }) => {
+  return (
+    <div className={styles.messageList}>
+      {messages.map((message) => (
+        <MessageBubble key={message.id} message={message} />
+      ))}
+    </div>
+  );
+});
+
+MessageList.displayName = 'MessageList';
+
+export default MessageList;
+=== frontend/src/components/chat/ProposalDisplay.module.css ===
+
+.adContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 24px;
+  margin-bottom: 0;
+}
+
+.adType {
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 20px 0;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.fieldLabel {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.fieldContent {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.listItem {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.listItem:last-child {
+  margin-bottom: 0;
+}
+
+.rawJson {
+  background: #f8f9fa;
+  padding: 16px;
+  margin: 0;
+  overflow-x: auto;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.visualNote {
+  margin-bottom: 12px;
+}
+
+.visualNote:last-child {
+  margin-bottom: 0;
+}
+
+.visualNote strong {
+  color: #555;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.visualNote ul {
+  margin: 8px 0 0 0;
+} 
+=== frontend/src/components/chat/ProposalDisplay.tsx ===
+
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+
+interface ProposalDisplayProps {
+  proposal: {
+    summary?: {
+      job_understanding?: string;
+      proposed_approach?: string;
+      timeline?: string;
+      budget?: string;
+    };
+    qualifications?: Record<string, string>;
+    methodology?: Record<string, string>;
+    value_proposition?: Record<string, string>;
+  };
+}
+
+export const ProposalDisplay: React.FC<ProposalDisplayProps> = ({ proposal }) => {
+  if (!proposal || !proposal.summary) {
+    return null;
+  }
+
+  return (
+    <Box sx={{ minWidth: 275, mt: 2 }}>
+      {proposal.summary.job_understanding && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Understanding
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.job_understanding}
+          </Typography>
+        </>
+      )}
+
+      {/* Add other sections similarly */}
+      {proposal.summary.proposed_approach && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Approach
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.proposed_approach}
+          </Typography>
+        </>
+      )}
+
+      {proposal.summary.timeline && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Timeline
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.timeline}
+          </Typography>
+        </>
+      )}
+
+      {proposal.summary.budget && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Budget
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.budget}
+          </Typography>
+        </>
+      )}
+    </Box>
+  );
+}; 
+=== frontend/src/components/chat/gtag.js ===
+
+<script>
+    // Helper function to generate unique event IDs
+    function generateEventId(prefix) {
+        return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    // Newsletter Manager Class
+    class NewsletterManager {
+        constructor() {
+            this.newsletterPopup = document.querySelector("#newsPopup");
+            this.newsletterCloseBtn = document.querySelector("#newsPopupClose");
+            this.newsletterCookieName = "newsletterSignup";
+            this.cookieDuration = 1; // Duration in days
+            
+            // Only initialize if not on homepage
+            if (!this.isHomePage()) {
+                this.init();
+            }
+        }
+
+        init() {
+            // Set initial styles
+            if (this.newsletterPopup) {
+                this.newsletterPopup.style.display = 'none';
+                this.newsletterPopup.style.opacity = '0';
+                this.newsletterPopup.style.transition = 'opacity 0.5s ease-in-out';
+            }
+
+            // Check if user has seen popup within last 24 hours
+            if (!this.getCookie(this.newsletterCookieName)) {
+                // Show popup after 3 second delay
+                setTimeout(() => {
+                    this.showPopup();
+                }, 3000);
+            }
+
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {
+            if (this.newsletterCloseBtn) {
+                this.newsletterCloseBtn.addEventListener("click", () => {
+                    this.hidePopup();
+                    // Set cookie when user closes popup
+                    this.setCookie(this.newsletterCookieName, 'shown', this.cookieDuration);
+                });
+            }
+        }
+
+        showPopup() {
+            if (this.newsletterPopup) {
+                this.newsletterPopup.style.display = 'block';
+                // Force browser reflow
+                void this.newsletterPopup.offsetWidth;
+                this.newsletterPopup.style.opacity = '1';
+                console.log('Newsletter popup displayed');
+            }
+        }
+
+        hidePopup() {
+            if (this.newsletterPopup) {
+                this.newsletterPopup.style.opacity = '0';
+                setTimeout(() => {
+                    this.newsletterPopup.style.display = 'none';
+                }, 500); // Match transition duration
+                console.log('Newsletter popup hidden');
+            }
+        }
+
+        isHomePage() {
+            return window.location.pathname === '/' || 
+                   window.location.pathname === '/home' ||
+                   window.location.pathname === '/index.html';
+        }
+
+        setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        getCookie(name) {
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookies = decodedCookie.split(';');
+            const cookieName = name + "=";
+            
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return null;
+        }
+    }
+
+    // Add this new class for Pinterest CAPI
+    class PinterestCAPI {
+        constructor() {
+            this.endpoint = 'https://api.pinterest.com/v5/ad_accounts/549768505093/events';
+            this.accessToken = '549768505093'; // Replace with your actual access token
+            this.productId = 'stepbuddy-100-W';
+        }
+
+        async sendEvent(eventData) {
+            try {
+                const response = await fetch(this.endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${this.accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        data: [{
+                            event_name: eventData.event_name,
+                            action_source: 'web',
+                            event_time: Math.floor(Date.now() / 1000),
+                            event_id: generateEventId(eventData.event_name),
+                            user_data: {
+                                client_ip_address: '{{client_ip_address}}',
+                                client_user_agent: navigator.userAgent
+                            },
+                            custom_data: {
+                                currency: 'USD',
+                                value: eventData.value || 0,
+                                content_ids: [this.productId],
+                                ...eventData.custom_data
+                            }
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Pinterest CAPI Error: ${response.statusText}`);
+                }
+
+                console.log('Pinterest CAPI event sent successfully:', eventData.event_name);
+            } catch (error) {
+                console.error('Pinterest CAPI Error:', error);
+            }
+        }
+
+        // Standard event tracking methods
+        async trackPageView() {
+            await this.sendEvent({
+                event_name: 'page_visit'
+            });
+        }
+
+        async trackAddToCart(product) {
+            await this.sendEvent({
+                event_name: 'add_to_cart',
+                value: parseFloat(product.price) || 0,
+                custom_data: {
+                    order_quantity: 1
+                }
+            });
+        }
+
+        async trackPurchase(orderData) {
+            await this.sendEvent({
+                event_name: 'checkout',
+                value: orderData.orderValue,
+                custom_data: {
+                    order_quantity: orderData.orderQuantity,
+                    order_id: orderData.orderId
+                }
+            });
+        }
+    }
+
+    // Update the PinterestTracker class to use CAPI
+    class PinterestTracker {
+        constructor() {
+            this.isInitialized = false;
+            this.productId = 'stepbuddy-100-W';
+            this.capi = new PinterestCAPI();
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {
+            // Track pagevisit using both pixel and CAPI
+            this.trackPageVisit();
+            
+            // Track user engagement
+            this.setupEngagementTracking();
+            
+            // Track scroll
+            this.setupScrollTracking();
+            
+            // Commerce listener
+            document.addEventListener('w-commerce-addtocartoperation-start', () => {
+                const product = window?.Webflow?.commerce?.product;
+                if (product) {
+                    this.trackAddToCart(product);
+                }
+            });
+        }
+
+        async trackPageVisit() {
+            if (!this.isInitialized) return;
+            
+            // Send to pixel
+            if (window.pintrk) {
+                pintrk('track', 'pagevisit', {
+                    event_id: generateEventId('pv'),
+                    product_id: this.productId
+                });
+            }
+            
+            // Send to CAPI
+            await this.capi.trackPageView();
+            console.log('Pinterest PageVisit tracked (Pixel + CAPI)');
+        }
+
+        setupEngagementTracking() {
+            let engagement_timer;
+            const ENGAGEMENT_THRESHOLD = 10000; // 10 seconds
+            
+            document.addEventListener('mousemove', () => {
+                if (!engagement_timer) {
+                    engagement_timer = setTimeout(() => {
+                        this.trackCustomEvent('user_engagement');
+                        engagement_timer = null;
+                    }, ENGAGEMENT_THRESHOLD);
+                }
+            });
+        }
+
+        setupScrollTracking() {
+            let scrolled = false;
+            window.addEventListener('scroll', () => {
+                if (!scrolled) {
+                    scrolled = true;
+                    this.trackCustomEvent('scroll_event');
+                }
+            }, { passive: true });
+        }
+
+        trackCustomEvent(eventName) {
+            if (!this.isInitialized || !window.pintrk) return;
+            
+            pintrk('track', 'custom', {
+                event_id: this.generateEventId(eventName),
+                custom_event: eventName,
+                product_id: this.productId
+            });
+            console.log(`Pinterest Custom Event tracked: ${eventName}`);
+        }
+
+        async trackAddToCart(product) {
+            if (!this.isInitialized) return;
+
+            const value = parseFloat(product.price) || 0;
+            
+            // Send to pixel
+            if (window.pintrk) {
+                pintrk('track', 'addtocart', {
+                    event_id: generateEventId('atc'),
+                    product_id: this.productId,
+                    value: value,
+                    order_quantity: 1,
+                    currency: 'USD'
+                });
+            }
+            
+            // Send to CAPI
+            await this.capi.trackAddToCart(product);
+            console.log('Pinterest AddToCart tracked (Pixel + CAPI)');
+        }
+
+        generateEventId(prefix) {
+            return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        }
+
+        initialize(pinterestId) {
+            !function(e){if(!window.pintrk){window.pintrk = function () {
+            window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+            n=window.pintrk;n.queue=[],n.version="3.0";var
+            t=document.createElement("script");t.async=!0,t.src=e;var
+            r=document.getElementsByTagName("script")[0];
+            r.parentNode.insertBefore(t,r)}}("https://s.pinimg.com/ct/core.js");
+            
+            pintrk('load', pinterestId, {
+                np: "webflow" // Identify as webflow integration
+            });
+            pintrk('page');
+            
+            this.isInitialized = true;
+            console.log('Pinterest tracking initialized');
+        }
+    }
+
+    // Twitter tracking helper class
+    class TwitterTracker {
+        constructor() {
+            this.isInitialized = false;
+        }
+
+        initialize(twitterId) {
+            !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+            },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+            a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+            
+            twq('config', twitterId);
+            this.isInitialized = true;
+            console.log('Twitter tracking initialized');
+        }
+    }
+
+    // Animation and Countdown Functions
+    function initializeAllFunctionalities() {
+        console.log('Initializing all functionalities...');
+
+        function createCountdownTimer(countdownElement, targetDate) {
+            console.log('Creating countdown timer for', targetDate);
+            const countDownDate = new Date(targetDate).getTime();
+            return setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                countdownElement.querySelector('.numbertext.days').textContent = days.toString().padStart(2, '0');
+                countdownElement.querySelector('.numbertext.hours').textContent = hours.toString().padStart(2, '0');
+                countdownElement.querySelector('.numbertext.mins').textContent = minutes.toString().padStart(2, '0');
+                countdownElement.querySelector('.numbertext.secs').textContent = seconds.toString().padStart(2, '0');
+                
+                if (distance < 0) {
+                    clearInterval(this);
+                    countdownElement.innerHTML = "EXPIRED";
+                    console.log('Countdown expired for', targetDate);
+                }
+            }, 1000);
+        }
+
+        const countdownElements = document.querySelectorAll('.countdown');
+        countdownElements.forEach(function(element) {
+            const targetDate = element.getAttribute('data-target-date');
+            if (targetDate) {
+                createCountdownTimer(element, targetDate);
+            }
+        });
+
+        console.log('All functionalities initialized');
+    }
+
+    // Initialize tracking
+    function initializeTracking() {
+        console.log('Initializing tracking services...');
+        
+        try {
+            // Initialize trackers only if not in Webflow editor
+            if (!window.Webflow?.editor) {
+                // Pinterest Tracking
+                const pinterestTracker = new PinterestTracker();
+                pinterestTracker.initialize('2612826253894');
+
+                // Twitter Tracking
+                const twitterTracker = new TwitterTracker();
+                twitterTracker.initialize('ovjsi');
+            }
+
+            // Google Analytics with error handling
+            try {
+                if (typeof gtag === 'undefined') {
+                    !function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtag/js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                    }(window,document,'script','dataLayer','G-YS8LTF6W4S');
+
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-YS8LTF6W4S');
+                    console.log('Google Analytics initialized');
+                }
+            } catch (e) {
+                console.warn('Google Analytics initialization failed:', e);
+            }
+        } catch (e) {
+            console.warn('Tracking initialization error:', e);
+        }
+    }
+
+    // Initialize checkout tracking
+    function initializeCheckoutTracking() {
+        if (window.location.pathname.includes('/checkout/order-confirmation')) {
+            window.addEventListener('load', async function() {
+                if (window.Webflow?.commerce?.orderValue) {
+                    const orderData = {
+                        orderValue: parseFloat(window.Webflow.commerce.orderValue) || 0,
+                        orderQuantity: window.Webflow?.commerce?.orderItems?.length || 0,
+                        orderId: window.Webflow?.commerce?.orderId
+                    };
+                    
+                    // Send to Pinterest CAPI
+                    const pinterestCAPI = new PinterestCAPI();
+                    await pinterestCAPI.trackPurchase(orderData);
+                    
+                    // Send to Pinterest Pixel (existing code)
+                    if (window.pintrk) {
+                        pintrk('track', 'checkout', {
+                            event_id: generateEventId('checkout'),
+                            product_id: 'stepbuddy-100-W',
+                            value: orderData.orderValue,
+                            order_quantity: orderData.orderQuantity,
+                            currency: 'USD'
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    // Scroll-based position animation
+    function initializeScrollAnimation() {
+        // Check if we're on desktop (min-width: 992px)
+        const isDesktop = window.matchMedia('(min-width: 992px)').matches;
+        if (!isDesktop) return;
+
+        const productAdd = document.querySelector('#productAdd');
+        if (!productAdd) return;
+
+        const scrollThreshold = 600; // Scroll threshold in pixels
+        const topOffset = 20; // Distance from top of viewport in pixels
+        
+        // Get initial position relative to viewport
+        const initialRect = productAdd.getBoundingClientRect();
+        const initialOffset = initialRect.top + window.pageYOffset;
+
+        // Add initial styles for smooth transitions
+        productAdd.style.transition = 'transform 0.3s ease-out';
+        productAdd.style.willChange = 'transform';
+
+        function updatePosition() {
+            const scrollPosition = window.scrollY || window.pageYOffset;
+            
+            if (scrollPosition >= scrollThreshold) {
+                const newPosition = scrollPosition - initialOffset + topOffset;
+                productAdd.style.transform = `translateY(${newPosition}px)`;
+            } else {
+                productAdd.style.transform = 'translateY(0)';
+            }
+        }
+
+        // Add scroll listener with passive flag for better performance
+        window.addEventListener('scroll', updatePosition, { passive: true });
+        
+        // Initial position check
+        updatePosition();
+    }
+
+    // Main initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded event fired');
+        
+        // More robust check for Webflow editor
+        const isWebflowEditor = (function() {
+            try {
+                return window.Webflow?.editor || 
+                       window.location.href.indexOf('webflow.com/design') > -1;
+            } catch(e) {
+                return false;
+            }
+        })();
+        
+        // Initialize tracking only if not in editor
+        if (!isWebflowEditor) {
+            setTimeout(() => {
+                initializeTracking();
+                initializeCheckoutTracking();
+                initializeScrollAnimation();
+            }, 0);
+        }
+        
+        // Initialize Newsletter with error handling
+        try {
+            new NewsletterManager();
+        } catch(e) {
+            console.warn('Newsletter initialization failed:', e);
+        }
+        
+        // Initialize Animations and Countdown with better error handling
+        const initializeWithFallback = () => {
+            try {
+                if (window.Webflow && !isWebflowEditor) {
+                    if (typeof window.Webflow.push === 'function') {
+                        console.log('Pushing initialization to Webflow queue');
+                        window.Webflow.push(initializeAllFunctionalities);
+                    } else {
+                        console.log('Webflow.push not available, running directly');
+                        initializeAllFunctionalities();
+                    }
+                } else {
+                    console.log('Running initialization directly');
+                    initializeAllFunctionalities();
+                }
+            } catch (e) {
+                console.warn('Animation initialization error:', e);
+                setTimeout(initializeAllFunctionalities, 100);
+            }
+        };
+
+        setTimeout(initializeWithFallback, 0);
+    });
+
+    // Update Webflow.push handling
+    if (window.Webflow && typeof window.Webflow.push !== 'function') {
+        window.Webflow = window.Webflow || {};
+        window.Webflow.push = function(callback) {
+            try {
+                callback();
+            } catch(e) {
+                console.warn('Webflow.push callback error:', e);
+            }
+        };
+    }
+</script>
+=== frontend/src/components/common/ErrorBoundary.tsx ===
+
+import React, { ErrorInfo, ReactNode } from 'react';
+
+interface Props {
+  children: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<Props, State> {
+  public state: State = {
+    hasError: false
+  };
+
+  public static getDerivedStateFromError(_: Error): State {
+    return { hasError: true };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught error:", error, errorInfo);
+  }
+
+  public render() {
+    if (this.state.hasError) {
+      return <h1>Sorry.. there was an error</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+=== frontend/src/components/common/LoadingSpinner.tsx ===
+
+import React from 'react';
+
+const LoadingSpinner: React.FC = () => {
+  return (
+    <div className="loading-spinner">
+      <div className="spinner"></div>
+      <p>Connecting to server...</p>
+    </div>
+  );
+};
+
+export default LoadingSpinner;

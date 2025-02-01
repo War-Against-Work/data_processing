@@ -1,0 +1,136 @@
+---
+Databases
+SQLite
+MySQL
+MariaDB
+Oracle Database
+PostgreSQL
+MongoDB
+Oracle NoSQL Database
+Firebase Realtime Database
+Firebase Cloud Firestore
+Full Stack Development Languages
+HTML
+CSS
+XHTML
+SQL
+PHP
+Ruby
+JavaScript
+Sass
+HTML5
+CSS 3
+Rust
+TypeScript
+C++
+Python
+Perl
+Full Stack Development Deliverables
+Website Optimization
+Web Application
+Ecommerce Website
+Website Redesign
+API Integration
+Web Development
+ChatGPT API Integration
+AI Agent Development
+Platform Plugin
+Payment Gateway Integration
+API Development
+AI App Development
+AI Development
+AI Model Integration
+Full-Stack Development
+AI-Generated Code
+AI Bot
+Chatbot
+Full Stack Development Skills
+WordPress
+Content Management System
+jQuery
+SaaS
+JSON
+Twig
+Google Analytics
+Adobe Photoshop
+Bootstrap
+AJAX
+CodeIgniter
+Amazon Web Services
+HTTP
+LeSS Framework
+Custom PHP
+Database Architecture
+Responsive Design
+GPT-4
+ChatGPT
+WebGL
+Elasticsearch
+RESTful API
+Agile Software Development
+DevOps
+Gemini for Google Workspace
+Vue.js
+NumPy
+Database Management
+Next.js
+Docker
+Underscore.js
+web2py
+Git
+CakePHP
+webpack
+Kubernetes
+XML
+OpenAI API
+Yii
+Tailwind CSS
+Three.js
+Zurb Foundation
+Ember.js
+Twilio API
+Google Cloud Platform
+React Bootstrap
+GPT-3.5
+Material UI
+React
+Node.js
+PyTorch
+Ruby on Rails
+GPT-4 API
+npm
+Gemini Code Assist
+GPT-3
+ExpressJS
+pandas
+AngularJS
+Amazon EC2
+Redux
+Bitbucket
+Angular
+TensorFlow
+GPT-4o
+gulp
+OpenAI Codex
+Grunt
+RESTful Architecture
+Website Security
+GitHub Copilot
+Web Servers
+lighttpd
+Apache HTTP Server
+Cloudflare
+NGINX
+Other skills
+Startup Company
+Fortune 500 Company
+UX & UI
+API
+Web Design
+Database Design
+Customer Relationship Management
+Business with 1000+ Employees
+Business with 100-999 Employees
+Business with 10-99 Employees
+Business with 1-9 Employees
+---

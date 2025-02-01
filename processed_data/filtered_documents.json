@@ -1,0 +1,22 @@
+[
+  {
+    "id": "doc1",
+    "title": "Example Document 1",
+    "content": "This is the main content of document 1...",
+    "summary": "Optional summary",
+    "tags": ["tag1", "tag2"],
+    "created_time": "2024-03-14T12:00:00Z",
+    "modified_time": "2024-03-14T12:00:00Z",
+    "web_link": "https://example.com/doc1"
+  },
+  {
+    "id": "doc2",
+    "title": "Example Document 2",
+    "content": "This is the main content of document 2...",
+    "summary": "Optional summary",
+    "tags": ["tag3", "tag4"],
+    "created_time": "2024-03-14T13:00:00Z",
+    "modified_time": "2024-03-14T13:00:00Z",
+    "web_link": "https://example.com/doc2"
+  }
+]

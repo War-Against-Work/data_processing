@@ -1,0 +1,548 @@
+
+=== frontend/src/components/chat/ChatInterface.tsx ===
+
+import React, { useState, useRef, useEffect } from 'react';
+import { TextField, IconButton } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import styles from './ChatInterface.module.css';
+import { v4 as uuidv4 } from 'uuid';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { addMessage, setLoading, setActiveProposal } from '../../store/chat';
+import { useSendMessageMutation } from '../../store/api';
+import { MessageBubble } from './MessageBubble';
+import { ChatItem } from '../../types/chat';
+import { ProposalDisplay } from './ProposalDisplay';
+
+const ChatInterface: React.FC = () => {
+  const [inputValue, setInputValue] = useState('');
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector((state) => state.chat.messages);
+  const loading = useAppSelector((state) => state.chat.loading);
+  const currentResponse = useAppSelector((state) => state.chat.currentResponse);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [sendMessage] = useSendMessageMutation();
+  const activeProposal = useAppSelector((state) => state.chat.activeProposal);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, currentResponse]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    const chatMessage = {
+      message: inputValue.trim(),
+      type: 'chat_message' as const
+    };
+
+    const userMessage: ChatItem = {
+      id: uuidv4(),
+      type: 'user_message',
+      content: chatMessage.message,
+      timestamp: new Date().toISOString()
+    };
+
+    dispatch(addMessage(userMessage));
+    setInputValue('');
+
+    try {
+      dispatch(setLoading(true));
+      const response = await sendMessage(chatMessage).unwrap();
+      
+      if (response) {
+        const agentMessage: ChatItem = {
+          id: uuidv4(),
+          type: 'agent_message',
+          content: response.response || '',
+          timestamp: new Date().toISOString()
+        };
+        
+        dispatch(addMessage(agentMessage));
+        
+        if (response.proposal) {
+          dispatch(setActiveProposal(response.proposal));
+        }
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return (
+    <div className={styles.chatContainer}>
+      <div className={styles.leftColumn}>
+        <div className={styles.messagesContainer}>
+            {messages?.map((message: ChatItem) => (
+              message && message.type !== 'proposal' && (
+                <MessageBubble 
+                  key={message.id || 'fallback-key'} 
+                  message={message} 
+                />
+              )
+            ))}
+          {currentResponse && (
+            <MessageBubble
+              key="current-response"
+              message={{
+                id: 'current-response',
+                type: 'agent_message',
+                content: currentResponse,
+                timestamp: Date.now()
+              }}
+            />
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        
+        <div className={styles.inputArea}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.inputContainer}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Type your message..."
+                disabled={loading}
+                className={styles.inputField}
+              />
+              <IconButton 
+                type="submit" 
+                color="primary" 
+                disabled={loading}
+              >
+                <ArrowForwardIcon />
+              </IconButton>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div className={styles.rightColumn}>
+        {activeProposal && <ProposalDisplay proposal={activeProposal} />}
+      </div>
+    </div>
+  );
+};
+
+export default ChatInterface;
+=== frontend/src/components/chat/MessageBubble.tsx ===
+
+import React from 'react';
+import { Paper, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { ProposalDisplay } from './ProposalDisplay';
+import { ChatItem, ProposalContent } from '../../types/chat';
+
+interface MessageBubbleProps {
+  message: ChatItem;
+}
+
+const BubbleContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  marginBottom: theme.spacing(1),
+}));
+
+const renderContent = (message: ChatItem) => {
+  switch (message.type) {
+    case 'proposal':
+      return message.content && typeof message.content === 'object' ? (
+        <ProposalDisplay proposal={message.content as ProposalContent} />
+      ) : null;
+    default:
+      return <Box>{typeof message.content === 'string' ? message.content : ''}</Box>;
+  }
+};
+
+export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+  const isUser = message.type === 'user_message';
+  
+  return (
+    <BubbleContainer sx={{ justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
+      <Paper
+        elevation={1}
+        sx={{
+          p: 2,
+          maxWidth: '70%',
+          bgcolor: isUser ? 'primary.light' : 'background.paper',
+          color: isUser ? 'primary.contrastText' : 'text.primary',
+        }}
+      >
+        {renderContent(message)}
+      </Paper>
+    </BubbleContainer>
+  );
+};
+=== frontend/src/components/chat/MessageList.tsx ===
+
+// MessageList.tsx
+
+import React, { memo } from 'react';
+import { MessageBubble } from './MessageBubble';
+import styles from './MessageList.module.css';
+import { ChatItem } from '../../types/chat';
+
+interface MessageListProps {
+  messages: ChatItem[];
+}
+
+const MessageList: React.FC<MessageListProps> = memo(({ messages }) => {
+  return (
+    <div className={styles.messageList}>
+      {messages.map((message) => (
+        <MessageBubble key={message.id} message={message} />
+      ))}
+    </div>
+  );
+});
+
+MessageList.displayName = 'MessageList';
+
+export default MessageList;
+=== frontend/src/components/chat/ProposalDisplay.tsx ===
+
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+
+interface ProposalDisplayProps {
+  proposal: {
+    summary?: {
+      job_understanding?: string;
+      proposed_approach?: string;
+      timeline?: string;
+      budget?: string;
+    };
+    qualifications?: Record<string, string>;
+    methodology?: Record<string, string>;
+    value_proposition?: Record<string, string>;
+  };
+}
+
+export const ProposalDisplay: React.FC<ProposalDisplayProps> = ({ proposal }) => {
+  if (!proposal || !proposal.summary) {
+    return null;
+  }
+
+  return (
+    <Box sx={{ minWidth: 275, mt: 2 }}>
+      {proposal.summary.job_understanding && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Understanding
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.job_understanding}
+          </Typography>
+        </>
+      )}
+
+      {/* Add other sections similarly */}
+      {proposal.summary.proposed_approach && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Approach
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.proposed_approach}
+          </Typography>
+        </>
+      )}
+
+      {proposal.summary.timeline && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Timeline
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.timeline}
+          </Typography>
+        </>
+      )}
+
+      {proposal.summary.budget && (
+        <>
+          <Typography variant="h6" gutterBottom>
+            Budget
+          </Typography>
+          <Typography variant="body2" paragraph>
+            {proposal.summary.budget}
+          </Typography>
+        </>
+      )}
+    </Box>
+  );
+}; 
+=== src/services/content/generator.py ===
+
+from typing import Dict, Any, List, Optional
+import openai
+import logging
+from pydantic import BaseModel
+from src.core.config.service_config import ServiceConfig
+from src.services.vector.search import VectorSearchService
+from src.api.middleware.error_handler import APIError
+import json
+from src.core.config.prompt_templates import SYSTEM_PROMPTS
+
+logger = logging.getLogger(__name__)
+
+RFP_STRUCTURE = {
+    "proposal": """{
+    "summary": {
+        "job_understanding": "string",
+        "proposed_approach": "string",
+        "timeline": "string",
+        "budget": "string"
+    },
+    "qualifications": {
+        "relevant_experience": ["string"],
+        "similar_projects": ["string"],
+        "technical_skills": ["string"]
+    },
+    "methodology": {
+        "project_phases": [{
+            "phase": "string",
+            "deliverables": ["string"],
+            "timeline": "string"
+        }],
+        "tools_technologies": ["string"],
+        "quality_assurance": ["string"]
+    },
+    "value_proposition": {
+        "unique_benefits": ["string"],
+        "risk_mitigation": ["string"],
+        "success_metrics": ["string"]
+    }
+}"""
+}
+
+class ContentRequest(BaseModel):
+    message: str
+    context_type: str = "job"  # or "profile"
+    max_context_items: int = 5
+
+class ContentResponse(BaseModel):
+    response: str  # Analysis for left column
+    sources: List[Dict[str, Any]]
+    confidence: float
+    proposal: Optional[str] = None  # Clean proposal text for right column
+    suggested_tools: List[str] = []
+
+class ContentGenerationService:
+    def __init__(self, vector_service=None, config=None):
+        self.config = config or get_service_config()
+        self.vector_service = vector_service
+        self.openai_client = openai.OpenAI(api_key=self.config.OPENAI_API_KEY)
+    
+    async def _get_context(self, request: ContentRequest) -> List[Dict[str, Any]]:
+        """Retrieve relevant context from vector store"""
+        try:
+            # Use single index with metadata filtering
+            search_results = await self.vector_service.search(
+                query=request.message,
+                index_name=self.config.INDEX_NAME,
+                filter={
+                    "type": request.context_type  # "job" or "profile"
+                },
+                top_k=request.max_context_items
+            )
+            
+            # Extract matches from the search results
+            return search_results.get("matches", [])
+            
+        except Exception as e:
+            logger.error(f"Failed to get context: {str(e)}")
+            raise APIError(
+                message="Failed to retrieve context",
+                code="CONTEXT_ERROR"
+            )
+    
+    async def _generate_from_context(self, request: ContentRequest, context: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Generate content using context"""
+        try:
+            logger.info(f"Processing {len(context)} context items")
+            
+            # Format context for prompt
+            context_text = "\n".join([
+                f"Context {i+1}:\n{item.get('metadata', {}).get('text', '')}"
+                for i, item in enumerate(context)
+            ])
+            
+            # Create chat messages with proper JSON structure
+            messages = [
+                {"role": "system", "content": "You are a professional proposal writer helping to create a detailed business proposal."},
+                {"role": "user", "content": f"""Please analyze this request and create a structured proposal:
+
+Request: {request.message}
+
+Available Context:
+{context_text if context else 'No additional context available.'}
+
+Please provide a response in JSON format with the following structure:
+{{
+    "message": "Your conversational response here",
+    "proposal": {{
+        "summary": {{
+            "job_understanding": "Brief overview of the project requirements",
+            "proposed_approach": "High-level approach to solving the problem",
+            "timeline": "Estimated timeline for completion",
+            "budget": "Budget considerations and pricing structure"
+        }},
+        "qualifications": {{
+            "skills": "Required skills and experience",
+            "expertise": "Relevant domain expertise"
+        }},
+        "methodology": {{
+            "approach": "Detailed approach to implementation",
+            "tools": "Tools and technologies to be used"
+        }},
+        "value_proposition": {{
+            "benefits": "Key benefits of the solution",
+            "differentiators": "What makes this solution unique"
+        }}
+    }}
+}}"""}
+            ]
+            
+            try:
+                # Get completion - note: no await here since the client handles it
+                completion = self.openai_client.chat.completions.create(
+                    model=self.config.CHAT_MODEL,
+                    messages=messages,
+                    temperature=0.7,
+                    response_format={ "type": "json_object" }
+                )
+                
+                # Extract response text from completion
+                response_text = completion.choices[0].message.content
+                
+                try:
+                    # Parse JSON response
+                    response_json = json.loads(response_text)
+                    logger.debug(f"Generated response: {response_json}")
+                    return response_json
+                    
+                except json.JSONDecodeError as e:
+                    logger.error(f"Failed to parse response as JSON: {e}")
+                    # Return error response with original text
+                    return {
+                        "message": response_text,
+                        "proposal": {
+                            "summary": {
+                                "job_understanding": "Error parsing response",
+                                "proposed_approach": "",
+                                "timeline": "",
+                                "budget": ""
+                            },
+                            "qualifications": {},
+                            "methodology": {},
+                            "value_proposition": {}
+                        }
+                    }
+                    
+            except Exception as e:
+                logger.error(f"Failed to generate response: {str(e)}")
+                # Return error response
+                return {
+                    "message": "I apologize, but I encountered an error generating the proposal. Please try again.",
+                    "proposal": {
+                        "summary": {
+                            "job_understanding": f"Error: {str(e)}",
+                            "proposed_approach": "",
+                            "timeline": "",
+                            "budget": ""
+                        },
+                        "qualifications": {},
+                        "methodology": {},
+                        "value_proposition": {}
+                    }
+                }
+            
+        except Exception as e:
+            logger.error(f"Content generation failed: {str(e)}")
+            raise APIError(
+                message="Failed to generate content",
+                code="CONTENT_GENERATION_ERROR"
+            )
+    
+    async def generate_content(self, request: ContentRequest) -> ContentResponse:
+        try:
+            # Always get context for RFP requests
+            context = await self._get_context(request)
+            return await self._generate_from_context(request, context)
+        except Exception as e:
+            logger.error(f"Content generation failed: {str(e)}")
+            raise APIError(
+                message="Failed to generate content",
+                code="CONTENT_GENERATION_ERROR"
+            )
+
+    async def generate_proposal(
+        self,
+        message: str,
+        requirements: Optional[List[str]] = None,
+        success_metrics: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """Generate a proposal from a message with optional requirements and metrics"""
+        try:
+            request = ContentRequest(
+                message=message,
+                context_type="job",
+                max_context_items=self.config.MAX_CONTEXT_ITEMS
+            )
+            
+            logger.info(f"Generating proposal for message: '{message[:100]}...'")
+            response = await self.generate_content(request)
+            
+            # Convert Pydantic model to dict if needed
+            if hasattr(response, 'dict'):
+                response_dict = response.dict()
+                logger.info("Converted Pydantic response to dict")
+            else:
+                response_dict = response
+                logger.info("Response was already a dict")
+            
+            logger.debug(f"Raw response: {response_dict}")
+            
+            # Ensure proposal has the expected structure
+            proposal = response_dict.get("proposal", {})
+            if not isinstance(proposal, dict):
+                logger.warning(f"Proposal was not a dict, got {type(proposal)}")
+                proposal = {}
+            
+            if "summary" not in proposal:
+                logger.warning("Proposal missing summary section")
+                proposal["summary"] = {}
+            
+            result = {
+                "message": response_dict.get("message"),
+                "proposal": {
+                    "summary": {
+                        "job_understanding": proposal.get("summary", {}).get("job_understanding", ""),
+                        "proposed_approach": proposal.get("summary", {}).get("proposed_approach", ""),
+                        "timeline": proposal.get("summary", {}).get("timeline", ""),
+                        "budget": proposal.get("summary", {}).get("budget", "")
+                    },
+                    "qualifications": proposal.get("qualifications", {}),
+                    "methodology": proposal.get("methodology", {}),
+                    "value_proposition": proposal.get("value_proposition", {})
+                },
+                "confidence": response_dict.get("confidence", 0.0),
+                "sources": response_dict.get("sources", [])
+            }
+            
+            logger.info(f"Generated proposal with {len(result.get('sources', []))} sources")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Failed to generate proposal: {str(e)}")
+            raise APIError(
+                message="Failed to generate proposal",
+                code="PROPOSAL_GENERATION_ERROR"
+            ) 
