@@ -78,9 +78,9 @@ CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "700"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
 BATCH_SIZE = 100  # Not used in one-by-one upsert
 
-# Add these constants at the top with other constants
-LOCAL_EMBED_MODEL = "intfloat/e5-large"  # This produces 1024-dim vectors
-VECTOR_DIM = 1536  # OpenAI's dimension
+# Update these constants at the top
+LOCAL_EMBED_MODEL = "BAAI/bge-large-en-v1.5"  # This produces 1024-dim vectors that we'll pad to 1536
+VECTOR_DIM = 1536  # Match existing Pinecone index dimension
 
 client = openai.OpenAI()
 
@@ -165,8 +165,8 @@ def init_pinecone(force_recreate=False):
         
         pc = Pinecone(api_key=PINECONE_API_KEY)
         
-        # Get dimension based on embedding source
-        dimension = 1536 if not USE_LOCAL_EMBEDDINGS else 1024  # e5-large dimension
+        # Always use 1536 dimensions to match OpenAI's format
+        dimension = VECTOR_DIM
         
         existing_indexes = pc.list_indexes()
         logger.info(f"Found existing indexes: {[index.name for index in existing_indexes]}")
@@ -180,10 +180,10 @@ def init_pinecone(force_recreate=False):
                 time.sleep(20)
         
         if INDEX_NAME not in [index.name for index in existing_indexes] or force_recreate:
-            logger.info(f"Creating new index '{INDEX_NAME}'...")
+            logger.info(f"Creating new index '{INDEX_NAME}' with dimension {dimension}...")
             pc.create_index(
                 name=INDEX_NAME,
-                dimension=dimension,  # Use correct dimension
+                dimension=dimension,
                 metric="cosine",
                 spec=ServerlessSpec(
                     cloud="aws",

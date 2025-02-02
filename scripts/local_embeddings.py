@@ -96,8 +96,7 @@ class LocalEmbeddingService:
             # Get base embeddings (1024 dim)
             embeddings = self._batch_encode(texts)
             
-            # Project to 1536 dimensions using a learned linear transformation
-            # For now, we'll use a simple zero-padding approach
+            # Project to 1536 dimensions using zero-padding
             padded_embeddings = F.pad(embeddings, (0, 1536 - embeddings.size(1)))
             
             # Convert to numpy and then to list for consistency with OpenAI format
