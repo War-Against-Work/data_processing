@@ -78,6 +78,10 @@ CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "700"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
 BATCH_SIZE = 100  # Not used in one-by-one upsert
 
+# Add these constants at the top with other constants
+LOCAL_EMBED_MODEL = "intfloat/e5-large"  # This produces 1024-dim vectors
+VECTOR_DIM = 1536  # OpenAI's dimension
+
 client = openai.OpenAI()
 
 # At the top of the file, after other imports
@@ -155,58 +159,41 @@ def chunk_text(text, chunk_size, encoder):
     return chunks
 
 def init_pinecone(force_recreate=False):
-    logger.info("=== Starting Pinecone Initialization ===")
+    """Initialize Pinecone index with correct dimensions."""
     try:
-        pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
-        logger.info(f"Successfully connected to Pinecone environment: {PINECONE_ENV}")
+        logger.info("=== Starting Pinecone Initialization ===")
         
-        existing_indexes = pc.list_indexes().names()
-        logger.info(f"Found existing indexes: {existing_indexes}")
+        pc = Pinecone(api_key=PINECONE_API_KEY)
         
-        if INDEX_NAME in existing_indexes:
-            if force_recreate:
+        # Get dimension based on embedding source
+        dimension = 1536 if not USE_LOCAL_EMBEDDINGS else 1024  # e5-large dimension
+        
+        existing_indexes = pc.list_indexes()
+        logger.info(f"Found existing indexes: {[index.name for index in existing_indexes]}")
+        
+        if force_recreate:
+            if INDEX_NAME in [index.name for index in existing_indexes]:
                 logger.info(f"Deleting existing index '{INDEX_NAME}'...")
-                try:
-                    pc.delete_index(INDEX_NAME)
-                    logger.info("Index deletion initiated")
-                    logger.info("Waiting for deletion to complete...")
-                    time.sleep(20)
-                except Exception as e:
-                    logger.error(f"Error deleting index: {e}")
-                    raise
-                
-                logger.info(f"Creating new index '{INDEX_NAME}'...")
-                try:
-                    pc.create_index(
-                        name=INDEX_NAME,
-                        dimension=1536,
-                        metric="cosine",
-                        spec=ServerlessSpec(cloud="aws", region="us-east-1")
-                    )
-                    logger.info("Index creation initiated")
-                    logger.info("Waiting for index to be ready...")
-                    time.sleep(20)
-                except Exception as e:
-                    logger.error(f"Error creating index: {e}")
-                    raise
-            else:
-                logger.info(f"Using existing index '{INDEX_NAME}'")
-        else:
-            logger.info(f"Creating new index '{INDEX_NAME}'...")
-            try:
-                pc.create_index(
-                    name=INDEX_NAME,
-                    dimension=1536,
-                    metric="cosine",
-                    spec=ServerlessSpec(cloud="aws", region="us-east-1")
-                )
-                logger.info("Index creation initiated")
-                logger.info("Waiting for index to be ready...")
+                pc.delete_index(INDEX_NAME)
+                logger.info("Index deletion initiated")
+                logger.info("Waiting for deletion to complete...")
                 time.sleep(20)
-            except Exception as e:
-                logger.error(f"Error creating index: {e}")
-                raise
-                
+        
+        if INDEX_NAME not in [index.name for index in existing_indexes] or force_recreate:
+            logger.info(f"Creating new index '{INDEX_NAME}'...")
+            pc.create_index(
+                name=INDEX_NAME,
+                dimension=dimension,  # Use correct dimension
+                metric="cosine",
+                spec=ServerlessSpec(
+                    cloud="aws",
+                    region="us-east-1"
+                )
+            )
+            logger.info("Index creation initiated")
+            logger.info("Waiting for index to be ready...")
+            time.sleep(20)
+            
         logger.info("=== Pinecone Initialization Complete ===")
         return pc.Index(INDEX_NAME)
         
