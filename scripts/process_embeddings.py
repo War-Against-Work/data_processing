@@ -391,139 +391,99 @@ def process_profile_data(profile_data):
     return docs
 
 async def process_and_upload_single_doc(doc, index, client):
+    """Process and upload a single document with separate embeddings for job and proposal."""
     logger.info(f"Processing document: {doc.get('title', '')}")
     
-    # Generate deterministic ID
-    doc_id = generate_unique_doc_id("job", f"{doc['title']}_{doc.get('outcome', doc.get('status', ''))}")
+    # Generate base document ID
+    base_doc_id = generate_unique_doc_id("job", f"{doc['title']}_{doc.get('outcome', doc.get('status', ''))}")
+    proposal_id = f"{base_doc_id}_proposal"
+    job_id = f"{base_doc_id}_jobdesc"
     
-    # Check if ANY chunks for this document exist
+    # Check if document already exists
     try:
-        # Check for both single doc ID and any chunk IDs
-        possible_ids = [doc_id] + [f"{doc_id}_chunk_{i}" for i in range(10)]  # Check up to 10 chunks
-        fetched = index.fetch(ids=possible_ids)
+        fetched = index.fetch(ids=[proposal_id, job_id])
         if any(fetched.get("vectors", {}).keys()):
-            logger.info(f"Skipping {doc_id} (already exists in Pinecone)")
+            logger.info(f"Skipping {base_doc_id} (already exists in Pinecone)")
             return 0
     except Exception as e:
-        logger.error(f"Error checking existence in Pinecone for {doc_id}: {e}")
+        logger.error(f"Error checking existence in Pinecone for {base_doc_id}: {e}")
         return 0
 
-    # Process with LLM
+    # Process with LLM for domains and style
     try:
         domains = await _derive_domain_llm(doc.get("job_description", ""), client)
-        if doc.get("cover_letter"):
-            style_analysis = await _analyze_style_and_tone(doc["cover_letter"], client)
-        else:
-            style_analysis = _default_style_analysis()
+        style_analysis = await _analyze_style_and_tone(doc.get("cover_letter", ""), client) if doc.get("cover_letter") else _default_style_analysis()
     except Exception as e:
-        logger.error(f"LLM processing failed for {doc_id}: {e}")
+        logger.error(f"LLM processing failed for {base_doc_id}: {e}")
         return 0
 
-    # Prepare content and metadata
-    content = (
-        f"Job Title: {doc.get('title', 'N/A')}\n"
-        f"Status: {doc.get('outcome', doc.get('status', 'N/A'))}\n"
-        f"Proposal Date: {doc.get('proposal_date', 'N/A')}\n\n"
-        f"Job Description:\n{doc.get('job_description', 'N/A')}\n\n"
-        f"My Proposal:\n{doc.get('cover_letter', 'N/A')}\n"
-    )
+    # Prepare text content
+    proposal_text = doc.get("cover_letter", "").strip()
+    job_description_text = doc.get("job_description", "").strip()
 
-    def clean_metadata_value(value):
-        """Clean metadata values to ensure Pinecone compatibility"""
-        if value is None:
-            return 0  # Convert None to 0 for numeric fields
-        if isinstance(value, (int, float, str, bool)):
-            return value
-        if isinstance(value, list):
-            return [str(item) for item in value]  # Ensure list items are strings
-        return str(value)  # Convert any other types to string
+    if not proposal_text or not job_description_text:
+        logger.warning(f"Missing required content for {base_doc_id}")
+        return 0
 
-    # Clean the metadata before creating the final dict
-    raw_metadata = {
+    # Base metadata common to both embeddings
+    base_metadata = {
         "type": "job_history",
         "title": str(doc.get("title", "")),
         "status": doc.get("outcome", doc.get("status", "N/A")),
-        "status_type": "date" if re.match(r"[A-Za-z]+ \d{1,2}, \d{4}", doc.get("outcome", doc.get("status", "N/A")).lower()) else next((v for k, v in {"hired": "hired", "job is closed": "closed"}.items() if k in doc.get("outcome", doc.get("status", "N/A")).lower()), "other"),
+        "status_type": "date" if re.match(r"[A-Za-z]+ \d{1,2}, \d{4}", doc.get("outcome", doc.get("status", "N/A")).lower()) 
+                    else next((v for k, v in {"hired": "hired", "job is closed": "closed"}.items() 
+                              if k in doc.get("outcome", doc.get("status", "N/A")).lower()), "other"),
         "was_hired": doc.get("outcome", doc.get("status", "N/A")).lower() == "hired",
         "is_closed": doc.get("outcome", doc.get("status", "N/A")).lower() in ["closed", "hired"],
         "proposal_date": str(doc.get("proposal_date", "")),
         "job_url": str(doc.get("url", "")),
-        "client_location": str(doc.get("client_info", {}).get("location", "")),
-        "client_city": str(doc.get("client_info", {}).get("city", "")),
-        "client_company_size": str(doc.get("client_info", {}).get("company_size", "")),
-        "client_member_since": str(doc.get("client_info", {}).get("member_since", "")),
-        "client_total_spent": float(re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("total_spent", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("total_spent", "0") or "0", re.IGNORECASE) else None,
-        "client_avg_hourly_rate": float(re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("avg_hourly_rate", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("avg_hourly_rate", "0") or "0", re.IGNORECASE) else None,
-        "client_total_hours": float(re.search(r"([\d.]+)", doc.get("client_info", {}).get("hours", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"([\d.]+)", doc.get("client_info", {}).get("hours", "0") or "0", re.IGNORECASE) else None,
-        "client_hire_rate": float(re.search(r"(\d+)%", doc.get("client_info", {}).get("hire_info", "") or "0", re.IGNORECASE).group(1)) / 100 if re.search(r"(\d+)%", doc.get("client_info", {}).get("hire_info", "") or "0", re.IGNORECASE) else None,
-        "client_has_open_jobs": "open job" in doc.get("client_info", {}).get("hire_info", "").lower(),
-        "client_total_hires": int(re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE).group(1)) if re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE) else 0,
-        "client_active_hires": int(re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE).group(2)) if re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE) else 0,
-        "client_rating": float(re.search(r"([\d.]+)", doc.get("client_info", {}).get("rating", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"([\d.]+)", doc.get("client_info", {}).get("rating", "0") or "0", re.IGNORECASE) else None,
-        "client_review_score": float(re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE).group(1)) if re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE) else None,
-        "client_review_count": int(re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE).group(2)) if re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE) else 0,
-        "client_jobs_posted": float(re.search(r"(\d+)", doc.get("client_info", {}).get("jobs_posted", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"(\d+)", doc.get("client_info", {}).get("jobs_posted", "0") or "0", re.IGNORECASE) else None,
-        "client_payment_verified": "verified" in str(doc.get("client_info", {}).get("payment_verified", "") or "").lower(),
-        "has_cover_letter": bool(doc.get("cover_letter")),
-        "cover_letter_length": len(str(doc.get("cover_letter", ""))),
-        "job_description_length": len(str(doc.get("job_description", ""))),
-        "proposal_complexity": len(str(doc.get("cover_letter", "")).split()),
-        "job_complexity": len(str(doc.get("job_description", "")).split()),
+        "client_info": clean_metadata_value(doc.get("client_info", {})),
         "domains": domains,
         "primary_domain": domains[0] if domains else "general",
         "is_multi_domain": len(domains) > 1,
         "domain_confidence": "llm" if domains else "pattern",
+        "processed_at": int(time.time())
+    }
+
+    # Create specific metadata for proposal
+    proposal_metadata = {
+        **base_metadata,
+        "embedding_type": "proposal",
+        "text": proposal_text,
         "overall_tone": style_analysis.get("overall_tone", "professional"),
         "technical_depth": style_analysis.get("technical_depth", "intermediate"),
         "voice_style": style_analysis.get("voice_style", "direct"),
-        "raw_style_analysis": style_analysis.get("raw_analysis", ""),
-        "processed_at": int(time.time()),
-        "qa": doc.get("qa_section", [])
+        "raw_style_analysis": style_analysis.get("raw_analysis", "")
     }
 
-    # Clean all metadata values
-    metadata = {k: clean_metadata_value(v) for k, v in raw_metadata.items()}
+    # Create specific metadata for job description
+    job_metadata = {
+        **base_metadata,
+        "embedding_type": "job_description",
+        "text": job_description_text
+    }
 
-    # Clean and chunk content
-    cleaned_content = clean_for_embedding(content)
-    if len(cleaned_content.strip()) < 20:
-        logger.info(f"Skipping '{doc.get('title','')}' (insufficient content)")
-        return 0
-
-    # Process chunks
-    chunks = chunk_text_with_overlap(cleaned_content)
     total_chunks = 0
     
-    for i, chunk in enumerate(chunks):
-        chunk_id = f"{doc_id}_chunk_{i}" if len(chunks) > 1 else doc_id
-        
-        # Check if chunk exists
-        try:
-            fetched = index.fetch(ids=[chunk_id])
-            if fetched.get("vectors", {}).get(chunk_id):
-                logger.info(f"Skipping chunk {chunk_id} (already exists)")
-                continue
-        except Exception as e:
-            logger.error(f"Error checking chunk {chunk_id}: {e}")
-            continue
-
-        # Get embedding and upsert
-        embedding = get_embeddings_batch([chunk])
-        if not embedding:
-            logger.error(f"Embedding failed for chunk {chunk_id}")
-            continue
-
-        try:
-            meta = {**metadata,
-                   "chunk_index": i,
-                   "total_chunks": len(chunks),
-                   "text": chunk}
-            index.upsert(vectors=[(chunk_id, embedding[0], meta)])
+    # Process and upload proposal embedding
+    try:
+        proposal_embedding = get_embeddings_batch([proposal_text])
+        if proposal_embedding:
+            index.upsert(vectors=[(proposal_id, proposal_embedding[0], proposal_metadata)])
             total_chunks += 1
-            logger.info(f"Successfully upserted chunk {chunk_id}")
-        except Exception as e:
-            logger.error(f"Failed to upsert chunk {chunk_id}: {e}")
-            continue
+            logger.info(f"Successfully upserted proposal embedding for {base_doc_id}")
+    except Exception as e:
+        logger.error(f"Failed to upsert proposal embedding for {base_doc_id}: {e}")
+
+    # Process and upload job description embedding
+    try:
+        job_embedding = get_embeddings_batch([job_description_text])
+        if job_embedding:
+            index.upsert(vectors=[(job_id, job_embedding[0], job_metadata)])
+            total_chunks += 1
+            logger.info(f"Successfully upserted job description embedding for {base_doc_id}")
+    except Exception as e:
+        logger.error(f"Failed to upsert job description embedding for {base_doc_id}: {e}")
 
     return total_chunks
 
@@ -534,7 +494,6 @@ def main():
 
     logger.info("=== Starting Document Processing ===")
     
-    # Initialize Pinecone first
     try:
         logger.info("Initializing Pinecone...")
         index = init_pinecone(force_recreate=args.reset)
@@ -543,7 +502,6 @@ def main():
         logger.error(f"Failed to initialize Pinecone: {e}")
         return
 
-    # Process documents one by one
     try:
         with open("data_processing/raw_data/jobs_data.json", "r", encoding="utf-8") as f:
             jobs_data = json.load(f)
@@ -560,7 +518,8 @@ def main():
 
         logger.info("=== Processing Complete ===")
         logger.info(f"Total documents processed: {total_processed}")
-        logger.info(f"Total chunks upserted: {total_chunks}")
+        logger.info(f"Total embeddings created: {total_chunks}")
+        logger.info(f"(Includes both job descriptions and proposals)")
     except Exception as e:
         logger.error(f"Error during document processing: {e}")
         raise
