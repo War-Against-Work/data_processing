@@ -5,19 +5,67 @@ import time
 import asyncio
 import logging
 import re
-from typing import List
+from typing import List, Dict, Any, Optional
 from pinecone import Pinecone, ServerlessSpec
 import tiktoken
 import openai
 from tqdm import tqdm
 from dotenv import load_dotenv
+import hashlib
+from colorama import init, Fore, Style
+from local_embeddings import LocalEmbeddingService
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
+# Initialize colorama for Windows compatibility
+init()
+
+class ColoredFormatter(logging.Formatter):
+    """Custom formatter with colors"""
+    
+    COLORS = {
+        'DEBUG': Fore.CYAN,
+        'INFO': Fore.GREEN,
+        'WARNING': Fore.YELLOW,
+        'ERROR': Fore.RED,
+        'CRITICAL': Fore.RED + Style.BRIGHT,
+    }
+
+    def format(self, record):
+        # Add timing information
+        if not hasattr(record, 'elapsed'):
+            record.elapsed = ''
+        
+        # Add color based on level
+        levelname = record.levelname
+        if levelname in self.COLORS:
+            record.levelname = f"{self.COLORS[levelname]}{levelname}{Style.RESET_ALL}"
+            
+        # Color the message based on type
+        if hasattr(record, 'msg_type'):
+            if record.msg_type == 'uuid':
+                record.msg = f"{Fore.CYAN}{record.msg}{Style.RESET_ALL}"
+            elif record.msg_type == 'embedding':
+                record.msg = f"{Fore.MAGENTA}{record.msg}{Style.RESET_ALL}"
+            elif record.msg_type == 'llm':
+                record.msg = f"{Fore.YELLOW}{record.msg}{Style.RESET_ALL}"
+                
+        return super().format(record)
+
+# Configure logging with new formatter
+def setup_logging():
+    formatter = ColoredFormatter(
+        '%(asctime)s [%(levelname)s] %(message)s %(elapsed)s'
+    )
+    
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    
+    logger = logging.getLogger(__name__)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    
+    return logger
+
+logger = setup_logging()
 
 # Load environment variables
 load_dotenv()
@@ -25,6 +73,7 @@ PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENV")
 INDEX_NAME = os.getenv("INDEX_NAME", "upwork-v1")
 EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-ada-002")
+USE_LOCAL_EMBEDDINGS = os.getenv("USE_LOCAL_EMBEDDINGS", "true").lower() == "true"
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "700"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
 BATCH_SIZE = 100  # Not used in one-by-one upsert
@@ -34,7 +83,46 @@ client = openai.OpenAI()
 # At the top of the file, after other imports
 logging.getLogger('pinecone').setLevel(logging.INFO)
 
-def get_embeddings_batch(texts):
+# Initialize embedding service
+local_embedding_service = LocalEmbeddingService() if USE_LOCAL_EMBEDDINGS else None
+
+def clean_metadata_value(value):
+    """Clean metadata values for Pinecone storage.
+    
+    Args:
+        value: Any metadata value that needs cleaning
+        
+    Returns:
+        Cleaned value suitable for Pinecone storage
+    """
+    if value is None:
+        return None
+        
+    if isinstance(value, (int, float, bool)):
+        return value
+        
+    if isinstance(value, dict):
+        return {k: clean_metadata_value(v) for k, v in value.items()}
+        
+    if isinstance(value, list):
+        return [clean_metadata_value(item) for item in value]
+        
+    # Convert any other types to string
+    try:
+        cleaned = str(value).strip()
+        # Remove any null-like strings
+        if cleaned.lower() in ('null', 'none', 'undefined', 'nan'):
+            return None
+        return cleaned
+    except:
+        return None
+
+def get_embeddings_batch(texts: List[str]) -> Optional[List[List[float]]]:
+    """Get embeddings using either local model or OpenAI API."""
+    if USE_LOCAL_EMBEDDINGS:
+        logger.debug("Using local embedding model")
+        return local_embedding_service.get_embeddings(texts)
+    
     max_retries = 3
     for attempt in range(max_retries):
         try:
@@ -147,11 +235,20 @@ def chunk_text_with_overlap(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
         start = end - overlap if end < len(tokens) else end
     return chunks
 
-def generate_unique_doc_id(doc_type, identifier, timestamp=None):
-    """Generate a deterministic ID that will be the same across runs"""
-    # Remove timestamp from ID generation to make it deterministic
-    id_hash = hex(hash(identifier) & 0xFFFFFF)[2:]
-    return f"{doc_type}_{id_hash}"
+def generate_stable_uuid(doc: Dict[str, Any]) -> str:
+    """
+    Generate a stable UUID for a document based on unique fields.
+    
+    Args:
+        doc: Document dictionary containing job data
+        
+    Returns:
+        Stable UUID string
+    """
+    # Use job URL as primary unique identifier, fall back to title + date if no URL
+    unique_string = doc.get("url", "") or f"{doc.get('title', '')}_{doc.get('proposal_date', '')}"
+    hash_value = hashlib.md5(unique_string.encode("utf8")).hexdigest()
+    return f"job_{hash_value[:12]}"  # Use first 12 chars for readability
 
 def _derive_domain_patterns(job_description: str) -> List[str]:
     if not job_description:
@@ -342,7 +439,7 @@ async def process_jobs_history(jobs_data):
             "qa": job.get("qa_section", [])
         }
 
-        doc_id = generate_unique_doc_id("job", f"{job['title']}_{raw_status}")
+        doc_id = generate_stable_uuid(job)
         docs.append({
             "id": doc_id,
             "content": content,
@@ -354,7 +451,7 @@ async def process_jobs_history(jobs_data):
 def process_profile_data(profile_data):
     docs = []
     for profile in profile_data["profiles"]:
-        unique_id = generate_unique_doc_id("profile", profile["specialization"])
+        unique_id = generate_stable_uuid(profile)
         profile_text = (
             f"Title: {profile['title']}\n"
             f"Specialization: {profile['specialization']}\n"
@@ -381,7 +478,7 @@ def process_profile_data(profile_data):
             "languages": profile.get("technical_expertise", {}).get("languages", []),
             "frameworks": profile.get("technical_expertise", {}).get("frameworks", []),
             "tools": profile.get("technical_expertise", {}).get("tools", []),
-            "processing_timestamp": int(time.time())
+            "processed_at": int(time.time())
         }
         docs.append({
             "id": unique_id,
@@ -390,44 +487,102 @@ def process_profile_data(profile_data):
         })
     return docs
 
+def flatten_client_info(client_info):
+    """Flatten client info dictionary into simple key-value pairs."""
+    if not client_info:
+        return {}
+        
+    flattened = {
+        "client_location": str(client_info.get("location", "")),
+        "client_city": str(client_info.get("city", "")),
+        "client_company_size": str(client_info.get("company_size", "")),
+        "client_member_since": str(client_info.get("member_since", "")),
+        "client_payment_verified": "verified" in str(client_info.get("payment_verified", "")).lower(),
+        "client_jobs_posted": float(re.search(r"(\d+)", client_info.get("jobs_posted", "0") or "0").group(1)) if re.search(r"(\d+)", client_info.get("jobs_posted", "0") or "0") else 0,
+        "client_hire_rate": float(re.search(r"(\d+)%", client_info.get("hire_info", "") or "0").group(1))/100 if re.search(r"(\d+)%", client_info.get("hire_info", "") or "0") else None,
+        "client_total_spent": float(re.search(r"\$?([\d.]+)K?", client_info.get("total_spent", "0") or "0").group(1)) if re.search(r"\$?([\d.]+)K?", client_info.get("total_spent", "0") or "0") else 0,
+        "client_rating": float(re.search(r"([\d.]+)", client_info.get("rating", "0") or "0").group(1)) if re.search(r"([\d.]+)", client_info.get("rating", "0") or "0") else None,
+        "client_review_count": int(re.search(r"[\d.]+ of (\d+) reviews", client_info.get("reviews", "") or "0").group(1)) if re.search(r"[\d.]+ of (\d+) reviews", client_info.get("reviews", "") or "0") else 0,
+        "client_review_score": float(re.search(r"([\d.]+) of \d+ reviews", client_info.get("reviews", "") or "0").group(1)) if re.search(r"([\d.]+) of \d+ reviews", client_info.get("reviews", "") or "0") else None,
+    }
+    
+    return {k: v for k, v in flattened.items() if v is not None}
+
 async def process_and_upload_single_doc(doc, index, client):
     """Process and upload a single document with separate embeddings for job and proposal."""
-    logger.info(f"Processing document: {doc.get('title', '')}")
+    start_time = time.time()
     
-    # Generate base document ID
-    base_doc_id = generate_unique_doc_id("job", f"{doc['title']}_{doc.get('outcome', doc.get('status', ''))}")
-    proposal_id = f"{base_doc_id}_proposal"
-    job_id = f"{base_doc_id}_jobdesc"
+    # Log embedding service being used
+    if not hasattr(process_and_upload_single_doc, '_logged_embedding_service'):
+        logger.info(f"Using {'local GPU' if USE_LOCAL_EMBEDDINGS else 'OpenAI API'} for embeddings")
+        process_and_upload_single_doc._logged_embedding_service = True
+    
+    # Generate stable UUID for the document
+    doc_uuid = generate_stable_uuid(doc)
+    rfp_id = f"{doc_uuid}_rfp"
+    proposal_id = f"{doc_uuid}_proposal"
+    
+    # Add separator line for clarity
+    logger.info("=" * 80)
+    logger.info(f"Processing document: {doc.get('title', '')}", extra={
+        'msg_type': 'title',
+        'elapsed': f"[{time.time() - start_time:.2f}s]"
+    })
+    logger.info(f"Document UUID: {doc_uuid}", extra={
+        'msg_type': 'uuid',
+        'elapsed': f"[{time.time() - start_time:.2f}s]"
+    })
     
     # Check if document already exists
     try:
-        fetched = index.fetch(ids=[proposal_id, job_id])
+        fetched = index.fetch(ids=[rfp_id, proposal_id])
         if any(fetched.get("vectors", {}).keys()):
-            logger.info(f"Skipping {base_doc_id} (already exists in Pinecone)")
+            logger.info(f"Skipping {doc_uuid} (already exists)", extra={
+                'msg_type': 'skip',
+                'elapsed': f"[{time.time() - start_time:.2f}s]"
+            })
             return 0
     except Exception as e:
-        logger.error(f"Error checking existence in Pinecone for {base_doc_id}: {e}")
+        logger.error(f"Error checking existence: {e}", extra={
+            'elapsed': f"[{time.time() - start_time:.2f}s]"
+        })
         return 0
 
-    # Process with LLM for domains and style
+    # Process with LLM
+    llm_start = time.time()
     try:
         domains = await _derive_domain_llm(doc.get("job_description", ""), client)
+        logger.info(f"Domains detected: {domains}", extra={
+            'msg_type': 'llm',
+            'elapsed': f"[{time.time() - llm_start:.2f}s]"
+        })
+        
+        style_start = time.time()
         style_analysis = await _analyze_style_and_tone(doc.get("cover_letter", ""), client) if doc.get("cover_letter") else _default_style_analysis()
+        logger.info(f"Style analysis completed", extra={
+            'msg_type': 'llm',
+            'elapsed': f"[{time.time() - style_start:.2f}s]"
+        })
     except Exception as e:
-        logger.error(f"LLM processing failed for {base_doc_id}: {e}")
+        logger.error(f"LLM processing failed: {e}", extra={
+            'elapsed': f"[{time.time() - start_time:.2f}s]"
+        })
         return 0
 
     # Prepare text content
+    rfp_text = doc.get("job_description", "").strip()
     proposal_text = doc.get("cover_letter", "").strip()
-    job_description_text = doc.get("job_description", "").strip()
 
-    if not proposal_text or not job_description_text:
-        logger.warning(f"Missing required content for {base_doc_id}")
+    if not rfp_text or not proposal_text:
+        logger.warning(f"Missing required content for {doc_uuid}")
         return 0
 
     # Base metadata common to both embeddings
     base_metadata = {
-        "type": "job_history",
+        "doc_uuid": doc_uuid,
+        "doc_category": "job_history",
+        "search_category": "rfp_similarity",
+        "embedding_type": "rfp",  # Will be overridden for proposal
         "title": str(doc.get("title", "")),
         "status": doc.get("outcome", doc.get("status", "N/A")),
         "status_type": "date" if re.match(r"[A-Za-z]+ \d{1,2}, \d{4}", doc.get("outcome", doc.get("status", "N/A")).lower()) 
@@ -437,7 +592,7 @@ async def process_and_upload_single_doc(doc, index, client):
         "is_closed": doc.get("outcome", doc.get("status", "N/A")).lower() in ["closed", "hired"],
         "proposal_date": str(doc.get("proposal_date", "")),
         "job_url": str(doc.get("url", "")),
-        "client_info": clean_metadata_value(doc.get("client_info", {})),
+        **flatten_client_info(doc.get("client_info", {})),
         "domains": domains,
         "primary_domain": domains[0] if domains else "general",
         "is_multi_domain": len(domains) > 1,
@@ -445,46 +600,70 @@ async def process_and_upload_single_doc(doc, index, client):
         "processed_at": int(time.time())
     }
 
+    # Create specific metadata for RFP
+    rfp_metadata = {
+        **base_metadata,
+        "embedding_type": "rfp",  # Explicitly set type
+        "text": rfp_text,
+        "content_length": len(rfp_text),
+        "word_count": len(rfp_text.split()),
+        "has_requirements": "requirements" in rfp_text.lower(),
+        "has_budget": any(term in rfp_text.lower() for term in ["budget", "rate", "salary", "compensation"])
+    }
+
     # Create specific metadata for proposal
     proposal_metadata = {
         **base_metadata,
-        "embedding_type": "proposal",
+        "embedding_type": "proposal",  # Explicitly set type
         "text": proposal_text,
         "overall_tone": style_analysis.get("overall_tone", "professional"),
         "technical_depth": style_analysis.get("technical_depth", "intermediate"),
         "voice_style": style_analysis.get("voice_style", "direct"),
-        "raw_style_analysis": style_analysis.get("raw_analysis", "")
-    }
-
-    # Create specific metadata for job description
-    job_metadata = {
-        **base_metadata,
-        "embedding_type": "job_description",
-        "text": job_description_text
+        "raw_style_analysis": style_analysis.get("raw_analysis", ""),
+        "search_priority": 1 if base_metadata["was_hired"] else 0
     }
 
     total_chunks = 0
     
+    # Process and upload RFP embedding
+    embed_start = time.time()
+    try:
+        rfp_embedding = get_embeddings_batch([rfp_text])
+        if rfp_embedding:
+            index.upsert(vectors=[(rfp_id, rfp_embedding[0], rfp_metadata)])
+            logger.info(f"[1/2] ✓ RFP embedding upserted      (ID: {rfp_id})", extra={
+                'msg_type': 'embedding',
+                'elapsed': f"[{time.time() - embed_start:.2f}s]"
+            })
+            total_chunks += 1
+    except Exception as e:
+        logger.error(f"Failed to upsert RFP embedding: {e}", extra={
+            'elapsed': f"[{time.time() - start_time:.2f}s]"
+        })
+        return 0
+
     # Process and upload proposal embedding
+    embed_start = time.time()
     try:
         proposal_embedding = get_embeddings_batch([proposal_text])
         if proposal_embedding:
             index.upsert(vectors=[(proposal_id, proposal_embedding[0], proposal_metadata)])
+            logger.info(f"[2/2] ✓ Proposal embedding upserted (ID: {proposal_id})", extra={
+                'msg_type': 'embedding',
+                'elapsed': f"[{time.time() - embed_start:.2f}s]"
+            })
             total_chunks += 1
-            logger.info(f"Successfully upserted proposal embedding for {base_doc_id}")
     except Exception as e:
-        logger.error(f"Failed to upsert proposal embedding for {base_doc_id}: {e}")
+        logger.error(f"Failed to upsert proposal embedding: {e}", extra={
+            'elapsed': f"[{time.time() - start_time:.2f}s]"
+        })
+        return 0
 
-    # Process and upload job description embedding
-    try:
-        job_embedding = get_embeddings_batch([job_description_text])
-        if job_embedding:
-            index.upsert(vectors=[(job_id, job_embedding[0], job_metadata)])
-            total_chunks += 1
-            logger.info(f"Successfully upserted job description embedding for {base_doc_id}")
-    except Exception as e:
-        logger.error(f"Failed to upsert job description embedding for {base_doc_id}: {e}")
-
+    logger.info("-" * 40)
+    logger.info(f"✓ Document processing complete", extra={
+        'elapsed': f"[Total: {time.time() - start_time:.2f}s]"
+    })
+    logger.info("-" * 40)
     return total_chunks
 
 def main():
