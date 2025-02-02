@@ -8,7 +8,6 @@ import re
 from typing import List
 from pinecone import Pinecone, ServerlessSpec
 import tiktoken
-import numpy as np
 import openai
 from tqdm import tqdm
 from dotenv import load_dotenv
@@ -31,6 +30,9 @@ CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
 BATCH_SIZE = 100  # Not used in one-by-one upsert
 
 client = openai.OpenAI()
+
+# At the top of the file, after other imports
+logging.getLogger('pinecone').setLevel(logging.INFO)
 
 def get_embeddings_batch(texts):
     max_retries = 3
@@ -65,37 +67,64 @@ def chunk_text(text, chunk_size, encoder):
     return chunks
 
 def init_pinecone(force_recreate=False):
-    print("Initializing Pinecone...")
-    pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
-    existing_indexes = pc.list_indexes().names()
-    if INDEX_NAME in existing_indexes:
-        if force_recreate:
-            print(f"Deleting existing index '{INDEX_NAME}'...")
-            pc.delete_index(INDEX_NAME)
-            print("Waiting for deletion to complete...")
-            time.sleep(20)
-            print("Creating new index...")
-            pc.create_index(
-                name=INDEX_NAME,
-                dimension=1536,
-                metric="cosine",
-                spec=ServerlessSpec(cloud="aws", region="us-east-1")
-            )
-            print("Index created successfully.")
-            time.sleep(20)
+    logger.info("=== Starting Pinecone Initialization ===")
+    try:
+        pc = Pinecone(api_key=PINECONE_API_KEY, environment=PINECONE_ENV)
+        logger.info(f"Successfully connected to Pinecone environment: {PINECONE_ENV}")
+        
+        existing_indexes = pc.list_indexes().names()
+        logger.info(f"Found existing indexes: {existing_indexes}")
+        
+        if INDEX_NAME in existing_indexes:
+            if force_recreate:
+                logger.info(f"Deleting existing index '{INDEX_NAME}'...")
+                try:
+                    pc.delete_index(INDEX_NAME)
+                    logger.info("Index deletion initiated")
+                    logger.info("Waiting for deletion to complete...")
+                    time.sleep(20)
+                except Exception as e:
+                    logger.error(f"Error deleting index: {e}")
+                    raise
+                
+                logger.info(f"Creating new index '{INDEX_NAME}'...")
+                try:
+                    pc.create_index(
+                        name=INDEX_NAME,
+                        dimension=1536,
+                        metric="cosine",
+                        spec=ServerlessSpec(cloud="aws", region="us-east-1")
+                    )
+                    logger.info("Index creation initiated")
+                    logger.info("Waiting for index to be ready...")
+                    time.sleep(20)
+                except Exception as e:
+                    logger.error(f"Error creating index: {e}")
+                    raise
+            else:
+                logger.info(f"Using existing index '{INDEX_NAME}'")
         else:
-            print(f"Using existing index '{INDEX_NAME}'")
-    else:
-        print(f"Creating new index '{INDEX_NAME}'...")
-        pc.create_index(
-            name=INDEX_NAME,
-            dimension=1536,
-            metric="cosine",
-            spec=ServerlessSpec(cloud="aws", region="us-east-1")
-        )
-        print("Index created successfully.")
-        time.sleep(20)
-    return pc.Index(INDEX_NAME)
+            logger.info(f"Creating new index '{INDEX_NAME}'...")
+            try:
+                pc.create_index(
+                    name=INDEX_NAME,
+                    dimension=1536,
+                    metric="cosine",
+                    spec=ServerlessSpec(cloud="aws", region="us-east-1")
+                )
+                logger.info("Index creation initiated")
+                logger.info("Waiting for index to be ready...")
+                time.sleep(20)
+            except Exception as e:
+                logger.error(f"Error creating index: {e}")
+                raise
+                
+        logger.info("=== Pinecone Initialization Complete ===")
+        return pc.Index(INDEX_NAME)
+        
+    except Exception as e:
+        logger.error(f"Failed to initialize Pinecone: {e}")
+        raise
 
 def clean_for_embedding(text):
     if not text or not isinstance(text, str):
@@ -119,10 +148,10 @@ def chunk_text_with_overlap(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
     return chunks
 
 def generate_unique_doc_id(doc_type, identifier, timestamp=None):
-    if timestamp is None:
-        timestamp = int(time.time())
+    """Generate a deterministic ID that will be the same across runs"""
+    # Remove timestamp from ID generation to make it deterministic
     id_hash = hex(hash(identifier) & 0xFFFFFF)[2:]
-    return f"{doc_type}_{id_hash}_{timestamp}"
+    return f"{doc_type}_{id_hash}"
 
 def _derive_domain_patterns(job_description: str) -> List[str]:
     if not job_description:
@@ -361,53 +390,180 @@ def process_profile_data(profile_data):
         })
     return docs
 
-def process_and_upload_documents(docs, index_name, index):
+async def process_and_upload_single_doc(doc, index, client):
+    logger.info(f"Processing document: {doc.get('title', '')}")
+    
+    # Generate deterministic ID
+    doc_id = generate_unique_doc_id("job", f"{doc['title']}_{doc.get('outcome', doc.get('status', ''))}")
+    
+    # Check if ANY chunks for this document exist
+    try:
+        # Check for both single doc ID and any chunk IDs
+        possible_ids = [doc_id] + [f"{doc_id}_chunk_{i}" for i in range(10)]  # Check up to 10 chunks
+        fetched = index.fetch(ids=possible_ids)
+        if any(fetched.get("vectors", {}).keys()):
+            logger.info(f"Skipping {doc_id} (already exists in Pinecone)")
+            return 0
+    except Exception as e:
+        logger.error(f"Error checking existence in Pinecone for {doc_id}: {e}")
+        return 0
+
+    # Process with LLM
+    try:
+        domains = await _derive_domain_llm(doc.get("job_description", ""), client)
+        if doc.get("cover_letter"):
+            style_analysis = await _analyze_style_and_tone(doc["cover_letter"], client)
+        else:
+            style_analysis = _default_style_analysis()
+    except Exception as e:
+        logger.error(f"LLM processing failed for {doc_id}: {e}")
+        return 0
+
+    # Prepare content and metadata
+    content = (
+        f"Job Title: {doc.get('title', 'N/A')}\n"
+        f"Status: {doc.get('outcome', doc.get('status', 'N/A'))}\n"
+        f"Proposal Date: {doc.get('proposal_date', 'N/A')}\n\n"
+        f"Job Description:\n{doc.get('job_description', 'N/A')}\n\n"
+        f"My Proposal:\n{doc.get('cover_letter', 'N/A')}\n"
+    )
+
+    def clean_metadata_value(value):
+        """Clean metadata values to ensure Pinecone compatibility"""
+        if value is None:
+            return 0  # Convert None to 0 for numeric fields
+        if isinstance(value, (int, float, str, bool)):
+            return value
+        if isinstance(value, list):
+            return [str(item) for item in value]  # Ensure list items are strings
+        return str(value)  # Convert any other types to string
+
+    # Clean the metadata before creating the final dict
+    raw_metadata = {
+        "type": "job_history",
+        "title": str(doc.get("title", "")),
+        "status": doc.get("outcome", doc.get("status", "N/A")),
+        "status_type": "date" if re.match(r"[A-Za-z]+ \d{1,2}, \d{4}", doc.get("outcome", doc.get("status", "N/A")).lower()) else next((v for k, v in {"hired": "hired", "job is closed": "closed"}.items() if k in doc.get("outcome", doc.get("status", "N/A")).lower()), "other"),
+        "was_hired": doc.get("outcome", doc.get("status", "N/A")).lower() == "hired",
+        "is_closed": doc.get("outcome", doc.get("status", "N/A")).lower() in ["closed", "hired"],
+        "proposal_date": str(doc.get("proposal_date", "")),
+        "job_url": str(doc.get("url", "")),
+        "client_location": str(doc.get("client_info", {}).get("location", "")),
+        "client_city": str(doc.get("client_info", {}).get("city", "")),
+        "client_company_size": str(doc.get("client_info", {}).get("company_size", "")),
+        "client_member_since": str(doc.get("client_info", {}).get("member_since", "")),
+        "client_total_spent": float(re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("total_spent", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("total_spent", "0") or "0", re.IGNORECASE) else None,
+        "client_avg_hourly_rate": float(re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("avg_hourly_rate", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"\$?([\d.]+)", doc.get("client_info", {}).get("avg_hourly_rate", "0") or "0", re.IGNORECASE) else None,
+        "client_total_hours": float(re.search(r"([\d.]+)", doc.get("client_info", {}).get("hours", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"([\d.]+)", doc.get("client_info", {}).get("hours", "0") or "0", re.IGNORECASE) else None,
+        "client_hire_rate": float(re.search(r"(\d+)%", doc.get("client_info", {}).get("hire_info", "") or "0", re.IGNORECASE).group(1)) / 100 if re.search(r"(\d+)%", doc.get("client_info", {}).get("hire_info", "") or "0", re.IGNORECASE) else None,
+        "client_has_open_jobs": "open job" in doc.get("client_info", {}).get("hire_info", "").lower(),
+        "client_total_hires": int(re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE).group(1)) if re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE) else 0,
+        "client_active_hires": int(re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE).group(2)) if re.search(r"(\d+) hires?, (\d+) active", doc.get("client_info", {}).get("hires_info", "") or "0", re.IGNORECASE) else 0,
+        "client_rating": float(re.search(r"([\d.]+)", doc.get("client_info", {}).get("rating", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"([\d.]+)", doc.get("client_info", {}).get("rating", "0") or "0", re.IGNORECASE) else None,
+        "client_review_score": float(re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE).group(1)) if re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE) else None,
+        "client_review_count": int(re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE).group(2)) if re.search(r"([\d.]+) of (\d+) reviews", doc.get("client_info", {}).get("reviews", "") or "0 of 0 reviews", re.IGNORECASE) else 0,
+        "client_jobs_posted": float(re.search(r"(\d+)", doc.get("client_info", {}).get("jobs_posted", "0") or "0", re.IGNORECASE).group(1)) if re.search(r"(\d+)", doc.get("client_info", {}).get("jobs_posted", "0") or "0", re.IGNORECASE) else None,
+        "client_payment_verified": "verified" in str(doc.get("client_info", {}).get("payment_verified", "") or "").lower(),
+        "has_cover_letter": bool(doc.get("cover_letter")),
+        "cover_letter_length": len(str(doc.get("cover_letter", ""))),
+        "job_description_length": len(str(doc.get("job_description", ""))),
+        "proposal_complexity": len(str(doc.get("cover_letter", "")).split()),
+        "job_complexity": len(str(doc.get("job_description", "")).split()),
+        "domains": domains,
+        "primary_domain": domains[0] if domains else "general",
+        "is_multi_domain": len(domains) > 1,
+        "domain_confidence": "llm" if domains else "pattern",
+        "overall_tone": style_analysis.get("overall_tone", "professional"),
+        "technical_depth": style_analysis.get("technical_depth", "intermediate"),
+        "voice_style": style_analysis.get("voice_style", "direct"),
+        "raw_style_analysis": style_analysis.get("raw_analysis", ""),
+        "processed_at": int(time.time()),
+        "qa": doc.get("qa_section", [])
+    }
+
+    # Clean all metadata values
+    metadata = {k: clean_metadata_value(v) for k, v in raw_metadata.items()}
+
+    # Clean and chunk content
+    cleaned_content = clean_for_embedding(content)
+    if len(cleaned_content.strip()) < 20:
+        logger.info(f"Skipping '{doc.get('title','')}' (insufficient content)")
+        return 0
+
+    # Process chunks
+    chunks = chunk_text_with_overlap(cleaned_content)
     total_chunks = 0
-    for doc in tqdm(docs, desc="Processing documents"):
-        cleaned_content = clean_for_embedding(doc["content"])
-        if len(cleaned_content.strip()) < 20:
-            logger.info(f"Skipping '{doc['metadata'].get('title','')}' due to insufficient content")
+    
+    for i, chunk in enumerate(chunks):
+        chunk_id = f"{doc_id}_chunk_{i}" if len(chunks) > 1 else doc_id
+        
+        # Check if chunk exists
+        try:
+            fetched = index.fetch(ids=[chunk_id])
+            if fetched.get("vectors", {}).get(chunk_id):
+                logger.info(f"Skipping chunk {chunk_id} (already exists)")
+                continue
+        except Exception as e:
+            logger.error(f"Error checking chunk {chunk_id}: {e}")
             continue
-        content_chunks = chunk_text_with_overlap(cleaned_content)
-        for chunk_index, chunk in enumerate(content_chunks):
-            meta = {**doc["metadata"],
-                    "chunk_index": chunk_index,
-                    "total_chunks": len(content_chunks),
-                    "text": chunk}
-            doc_id = f"{doc['id']}_chunk_{chunk_index}" if len(content_chunks) > 1 else doc["id"]
-            try:
-                fetched = index.fetch(ids=[doc_id])
-            except Exception as e:
-                logger.error(f"Error fetching {doc_id}: {e}")
-                fetched = {}
-            if fetched and doc_id in fetched.get("vectors", {}):
-                logger.info(f"Skipping {doc_id} (already exists)")
-                continue
-            embedding = get_embeddings_batch([chunk])
-            if not embedding:
-                logger.error(f"Embedding failed for {doc_id}; skipping")
-                continue
-            index.upsert(vectors=[(doc_id, embedding[0], meta)])
+
+        # Get embedding and upsert
+        embedding = get_embeddings_batch([chunk])
+        if not embedding:
+            logger.error(f"Embedding failed for chunk {chunk_id}")
+            continue
+
+        try:
+            meta = {**metadata,
+                   "chunk_index": i,
+                   "total_chunks": len(chunks),
+                   "text": chunk}
+            index.upsert(vectors=[(chunk_id, embedding[0], meta)])
             total_chunks += 1
-            logger.info(f"Upserted {doc_id}")
+            logger.info(f"Successfully upserted chunk {chunk_id}")
+        except Exception as e:
+            logger.error(f"Failed to upsert chunk {chunk_id}: {e}")
+            continue
+
     return total_chunks
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--reset", action="store_true", help="Delete and recreate the index before processing")
+    parser.add_argument("--reset", action="store_true", help="Delete and recreate the index")
     args = parser.parse_args()
-    reset = args.reset
 
-    print("\n=== Starting Document Processing ===\n")
-    print("Loading job history documents...")
-    with open("data_processing/raw_data/jobs_data.json", "r", encoding="utf-8") as f:
-        jobs_data = json.load(f)
-    all_docs = asyncio.run(process_jobs_history(jobs_data))
-    index = init_pinecone(force_recreate=reset)
-    total_chunks = process_and_upload_documents(all_docs, INDEX_NAME, index)
-    print("\n=== Processing Complete ===")
-    print(f"Total documents: {len(all_docs)}")
-    print(f"Total chunks upserted: {total_chunks}")
+    logger.info("=== Starting Document Processing ===")
+    
+    # Initialize Pinecone first
+    try:
+        logger.info("Initializing Pinecone...")
+        index = init_pinecone(force_recreate=args.reset)
+        logger.info("Pinecone initialization completed successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize Pinecone: {e}")
+        return
+
+    # Process documents one by one
+    try:
+        with open("data_processing/raw_data/jobs_data.json", "r", encoding="utf-8") as f:
+            jobs_data = json.load(f)
+        logger.info(f"Loaded {len(jobs_data)} jobs from jobs_data.json")
+
+        total_processed = 0
+        total_chunks = 0
+        
+        for job in tqdm(jobs_data, desc="Processing jobs"):
+            chunks_processed = asyncio.run(process_and_upload_single_doc(job, index, client))
+            if chunks_processed > 0:
+                total_processed += 1
+                total_chunks += chunks_processed
+
+        logger.info("=== Processing Complete ===")
+        logger.info(f"Total documents processed: {total_processed}")
+        logger.info(f"Total chunks upserted: {total_chunks}")
+    except Exception as e:
+        logger.error(f"Error during document processing: {e}")
+        raise
 
 if __name__ == "__main__":
     main()
