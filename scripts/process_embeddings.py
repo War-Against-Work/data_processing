@@ -219,11 +219,7 @@ async def _analyze_style_and_tone(text: str, client: openai.OpenAI) -> dict:
         completion = client.chat.completions.create(
             model="o3-mini",
             messages=messages,
-<<<<<<< HEAD
             reasoning_effort="medium",
-=======
-            reasoning_effort="medium",  # Using medium reasoning effort
->>>>>>> d2d56e3a361794cd4c85517a021ff7215e99a76e
             max_completion_tokens=1000,
             response_format={"type": "json_object"}
         )
@@ -532,24 +528,9 @@ async def process_and_upload_single_doc(doc, index, client):
     return total_chunks
 
 def main():
-<<<<<<< HEAD
     parser = argparse.ArgumentParser()
     parser.add_argument("--reset", action="store_true", help="Delete and recreate the index")
     args = parser.parse_args()
-=======
-    print("\n=== Starting Document Processing ===\n")
-    
-    # Load only jobs data
-    print("Loading job history documents...")
-    with open("data_processing/raw_data/jobs_data.json", "r", encoding="utf-8") as f:
-        jobs_data = json.load(f)
-    
-    # Process only job history documents
-    all_docs = asyncio.run(process_jobs_history(jobs_data))
-    
-    # Upload to single index with force_recreate=True
-    total_chunks = process_and_upload_documents(all_docs, INDEX_NAME)
->>>>>>> d2d56e3a361794cd4c85517a021ff7215e99a76e
 
     logger.info("=== Starting Document Processing ===")
     
